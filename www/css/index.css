@@ -1,0 +1,118 @@
+/*HOME*/
+#map{
+	vertical-align:middle;
+}
+
+#geolocation{
+	font:14px Tahoma, Geneva, sans-serif;
+}
+
+
+/*REPORT*/
+.ui-icon-camera{
+	/*background:url(../images/camera.png);*/
+	background-size:cover;
+}
+
+#googlemap{
+	background:#CCC;
+	height:150px;
+	border:1px solid black;
+	padding:10px;
+	-webkit-box-shadow:0px 5px 5px #999;
+	-moz-box-shadow:0px 5px 5px #999;
+	box-shadow:0px 5px 5px #999;
+	text-shadow:0px 2px 0px #FFF;
+}
+
+#capture{
+	width:90px;
+	height:90px;
+	background:white;
+	border:5px solid #EEE;
+	-webkit-box-shadow:5px 5px 5px #999;
+	-moz-box-shadow:5px 5px 5px #999;
+	box-shadow:0px 5px 5px #999;
+	position:absolute;
+	left:7px;
+	top:47px;
+	display:none;
+}
+
+.gridtitle {
+	font-size:1.0em;
+	text-align:center;
+}
+a img { border:0px;}
+
+.ui-grid-b img {
+	width: 80%;
+}
+.ui-block-a, .ui-block-b, .ui-block-c { text-align:center; }
+.ui-popup-screen.in  { background-color:#000;}
+
+.navbar { background-color:#FFF; margin: 0px; box-shadow: 3px 3px 3px #888888; }
+.navbar .ui-btn { border-color: #d03040; }
+.navbar .ui-btn-text { color: #d03040; }
+.navbar .ui-btn-active2 { background-color: #d03040; }
+.navbar .ui-btn-active2 .ui-btn-text { color: #fff;  }
+
+.item { background-color:#fff; padding: 10px; margin-bottom:10px; border-radius: 10px;}
+.item-image { text-align:center;}
+#itemlist, #detail, #comment, #travel, #search, #travel_comment { background-color:#dedede; }
+.titleDistance { width:100%; margin-top:2px; margin-bottom: 2px;}
+.item-title { font-weight:bold; width:70%; float:left;}
+.item-distance { width: 25%; float:right; font-size:0.8em;}
+.item-spec { font-size: 0.9em; }
+.item-buttons { border-top: solid 1px #999; margin-top:10px;  background-color:#f1f1f1;}
+.item-button { float:left; width:25%; text-align:center; padding-top:10px; padding-bottom:10px;}
+.item-button2 { float:left; width:33%; text-align:center; padding-top:10px; padding-bottom:10px;}
+.item-button:hover,.item-button2:hover { background-color:#CCC;}
+.item-button a { text-decoration:none; color:#000; font-size: 0.7em;}
+.item-button2 a { text-decoration:none; color:#000; }
+.promotion { color: #e44148;}
+.clearboth { clear:both;}
+
+.author { text-align:center; font-size:0.5em;}
+.avatar { width: 15%; float:left; }
+.comment{ width: 80%; float:left; font-size:0.9em; margin-left: 10px;}
+.date { color: #999; text-align:right; font-size:0.8em; margin-top:15px;}
+.input { padding-top:5px; padding-bottom:5px;}
+
+.ui-listview>li h3, .ui-listview>li p { color:#000;}
+.photo img { width:100%; }
+.photo { width:32%; height:80px; overflow:hidden; margin-left:1px; margin-top:-3px; float:left; margin-bottom: 10px;}
+
+.photo_preview img {width:100%;}
+.btn-red {background-color: #d03040;  color: #fff;}
+.member_content .ui-btn { background-color: #d03040;  color: #fff; }
+.share_title { background-color: #d03040; color: #fff; padding: 5px; }
+.share_photo img { width:100%; border-radius: 3px; }
+.share_photo { width:22%; margin-left:2px; margin-top:2px; float:left; padding: 2px 2px 0px 2px; background-color:#f1f1f1; border-radius: 3px; box-shadow: 2px 2px 2px #888888; }
+
+.fb_btn {
+     background-color: #2b4170; 
+  background: -moz-linear-gradient(top, #3b5998, #2b4170);
+  background: -ms-linear-gradient(top, #3b5998, #2b4170);
+  background: -webkit-linear-gradient(top, #3b5998, #2b4170);
+  border: 1px solid #2b4170;
+  border-color: #2b4170;
+  text-shadow: 0 -1px -1px #1f2f52;
+}
+
+.weibo_btn{
+    background-color: #C50003; 
+  background: -moz-linear-gradient(top, #EA2805, #C50003);
+  background: -ms-linear-gradient(top, #EA2805, #C50003);
+  background: -webkit-linear-gradient(top, #EA2805, #C50003);
+  border: 1px solid #C50003;
+  border-color: #C50003;
+  text-shadow: 0 -1px -1px #1f2f52;
+}
+
+.main_menu .ui-block-a:hover img, .main_menu .ui-block-a:active img  { background-color:#dedede;}
+.main_menu .ui-block-b:hover img, .main_menu .ui-block-b:active img  { background-color:#dedede;}
+.main_menu .ui-block-c:hover img, .main_menu .ui-block-c:active img  { background-color:#dedede;}
+.rec_btn:hover, .rec_btn:active { background-color:#dedede; cursor:pointer; }
+
+.item-title a { color: #000; text-decoration:none; font-weight:bold;}

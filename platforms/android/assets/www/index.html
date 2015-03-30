@@ -1,0 +1,3311 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />        
+        <link rel="stylesheet" href="css/jquery.mobile-1.2.1.css" />
+        <link rel="stylesheet" href="css/themes/plife.css" />        
+
+        <link rel="stylesheet" href="css/themes/jquery.mobile.icons.min.css" />	
+        <link rel="stylesheet" href="css/jquery.mobile.structure-1.4.5.min.css" />         
+        <link rel="stylesheet" type="text/css" href="css/index.css" />        
+        <script src="cordova.js" ></script>
+        <script src="js/jquery.js"></script>
+        <script src="js/index.js"></script>
+        <script src="js/jquery.mobile-1.2.0.js"></script>        
+        <title>FLBK 非來不可</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <script src="http://maps.google.com/maps/api/js?sensor=false"></script>
+        <style>
+            #map, #map-canvas { width: 100%; height: 100%; padding: 0; }
+            </style>
+
+    </head>
+    <body>
+
+        <!-- Home Page -->
+        <div id="home" data-role="page" data-position="fixed">
+            <div data-role="header">
+                <h1><img src="images/logo.png" style="height: 80px;"/></h1>
+            </div>
+            <div class="main_menu" data-role="content">
+
+                <div class="ui-grid-b" style="margin-bottom:20px">
+                    <div class="ui-block-a">
+                        <a href="javascript:changePage('food')"><img src="images/food.png" ></a>
+                        <div class="gridtitle">美食</div>
+                    </div>
+                    <div class="ui-block-b">
+                        <a href="javascript:changePage('hotspot')"><img src="images/hotspot.png"  ></a>
+                        <div class="gridtitle">景點</div>
+                    </div>
+                    <div class="ui-block-c">
+                        <a href="javascript:changePage('acco')"><img src="images/acco.png"  ></a>
+                        <div class="gridtitle">住宿</div>
+                    </div>
+                </div>
+
+                <div class="ui-grid-b" style="margin-bottom:20px">
+                    <div class="ui-block-a">
+                        <a href="javascript:changePage('promotion')"><img src="images/promotion.png"></a>
+                        <div class="gridtitle">優惠</div>
+                    </div>
+                    <div class="ui-block-b">
+                        <a href="javascript:changePage('favorite')"><img src="images/favorite.png"  ></a>
+                        <div class="gridtitle">收藏</div>
+                    </div>
+                    <div class="ui-block-c">
+                        <a href="javascript:toTravel();"><img src="images/travel.png"  ></a>
+                        <div class="gridtitle">旅遊日記</div>
+                    </div>
+                </div>
+
+                <div class="ui-grid-b">
+                    <div class="ui-block-a">
+                        <a href="index.html#member"><img src="images/member.png" ></a>
+                        <div class="gridtitle">會員中心</div>
+                    </div>
+                    <div class="ui-block-b">
+                        <a href="index.html#setting"><img src="images/setting.png" ></a>
+                        <div class="gridtitle">設定</div>
+                    </div>
+                    <div class="ui-block-c">
+                        <a href="javascript:gotoMsg();"><img src="images/message.png"  ></a>
+                        <div class="gridtitle">訊息中心</div>
+                    </div>
+                </div>
+
+            </div>
+            <div data-role="footer" data-position="fixed" style="background-color:#fff;">
+                <img onclick="window.open('http://www.flbk.com.tw', '_system');" class="ads_image" src="images/ads.jpg" style="width:100%;"/>
+            </div>
+        </div>
+
+        <!-- Item List -->
+        <div id="itemlist" data-role="page" data-position="fixed">
+            <div data-role="header" data-position="fixed">
+                <a href="index.html#home" class="ui-btn ui-icon-home ui-btn-icon-left">首頁</a>
+                <h1 id="pagetitle">美食</h1>                
+                <a href="index.html#search" class="ui-btn ui-icon-search ui-btn-icon-right">搜尋</a>
+            </div>
+            <div class="navbar" data-role="navbar">
+                <ul>
+                    <li><a href="javascript:renderItemlist('id');" style="padding:0px;" class="ordertab ui-btn-active2" >更新排序</a></li>
+                    <li><a href="javascript:renderItemlist('dist');" style="padding:0px;" class="ordertab" >距離排序</a></li>
+                    <li><a href="javascript:renderItemlist('hot');" style="padding:0px;" class="ordertab" >人氣排序</a></li>                    
+                </ul>
+            </div><!-- /navbar -->
+
+            <div id="pagecontent" data-role="content">
+                
+
+            </div>   
+
+            <div data-role="footer" data-position="fixed" style="background-color:#fff;">
+                <img onclick="window.open('http://www.flbk.com.tw', '_system');" class="ads_image" src="images/ads.jpg" style="width:100%;"/>
+            </div>
+
+        </div>
+
+        <!-- Search -->
+        <div id="search" data-role="page" data-position="fixed">
+            <div data-role="header">
+                <a href="index.html" data-rel="back" class="ui-btn ui-icon-home ui-btn-icon-left">上一頁</a>
+                <h1>搜尋</h1>       
+                <a href="javascript:goSearch();" class="ui-btn ui-icon-search ui-btn-icon-right">Go!</a>
+            </div>
+            
+            <div id="searchcontent" data-role="main">
+                <input type="text" name="search" id="search-basic" value="" placeholder="請輸入關鍵字" onblur="checkReinputRecommend()" />
+
+                <ul id="search_recommend" data-role="listview">
+                </ul>                                            	
+            </div>   
+            
+            <div id="search_result" data-role="content">
+            </div>
+
+            <div data-role="footer" data-position="fixed" style="background-color:#fff;">
+                <img onclick="window.open('http://www.flbk.com.tw', '_system');" class="ads_image" src="images/ads.jpg" style="width:100%;"/>
+            </div>
+
+        </div>
+
+        <!-- Product Detail -->
+        <div id="detail" data-role="page" data-position="fixed">
+            <div data-role="header">
+                <a id="detailbackbtn" href="javascript: gotoList();" class="ui-btn ui-icon-arrow-l ui-btn-icon-left">列表</a>
+                <h1 id="detailtitle">項目標題</h1>                
+            </div>
+            <div id="detailcontent" data-role="content">
+
+            </div>  
+
+            <!-- tel, addr, time, remarks -->
+            <div id="detailcontent_tel" data-role="content" style="margin-top:-30px;" >
+            </div>
+
+            <!-- thumb and description -->
+            <div id="detailcontent2" data-role="content" style="margin-top:-30px;" >
+                <div class="item">
+                    <div id="more_img">                        
+                    </div>                                        
+                </div>
+
+                <div class="item">
+                    <div id="detail_desc" class="description">
+                    </div>
+                </div>
+
+                <div data-role="popup" id="popupBasic" data-overlay-theme="b" data-theme="d" data-corners="false" style="display:none;">
+                    <img id="popupImage" src="images/food1.jpg" />
+                </div>
+
+            </div> 
+
+            <!-- member sharing -->
+            <div data-role="content" style="margin-top:-30px;" >
+                <div class="share_title">網友分享</div>
+                <div id="detailcontent_share">
+                </div>
+            </div>
+
+
+
+            <div data-role="footer" data-position="fixed" style="background-color:#fff;">
+                <img onclick="window.open('http://www.flbk.com.tw', '_system');" class="ads_image" src="images/ads.jpg" style="width:100%;"/>
+            </div>
+
+        </div>
+
+        <!-- Comment -->
+        <div id="comment" data-role="page" data-position="fixed">
+            <div data-role="header">
+                <a href="javascript:gotoDetail();" class="ui-btn ui-icon-arrow-l ui-btn-icon-left">項目</a>
+                <h1 id="commenttitle">評論</h1>                
+            </div>
+            <div id="comment_detail" data-role="content">
+
+            </div>  
+            <!-- comment -->
+            <div id="comment_part" data-role="content" style="margin-top:-30px;" >
+                
+            </div> 
+
+            <div data-role="footer" data-position="fixed" style="background-color:#fff; padding-left:10px;">
+                <table width="95%">
+                    <tr><td width="65%"><textarea id="comment_area" data-form="ui-body-b" class="input" data-theme="b" placeholder="有什麼話想說?..." style="width:90%;"></textarea></td><td><a href="javascript:commentPostPhoto('item');" class="ui-btn" style="padding-top:0px; padding-bottom:0px;"><img src="images/camera.png" style="height:30px;"/></a>
+                        </td><td><a href="javascript:postComment('item');" class="ui-btn">送出</a></td></tr>
+                </table>            	
+            </div>
+
+        </div>
+
+        <!-- Travel -->
+        <div id="travel" data-role="page" data-position="fixed">
+            <div data-role="header">
+                <a href="index.html#home" class="ui-btn ui-icon-arrow-l ui-btn-icon-left">首頁</a>
+                <h1>我的旅遊日記</h1>                
+            </div>
+
+            <div id="travelcontent" data-role="content">
+
+
+            </div>             
+        </div>
+
+        <!-- Travel member -->
+        <div id="travel_member" data-role="page" data-position="fixed">
+            <div data-role="header">
+                <a href="javascript:;" data-rel="back" class="ui-btn ui-icon-arrow-l ui-btn-icon-left">上一頁</a>
+                <h1>成員</h1>       
+                <a href="javascript: allMembersMap();" class="ui-btn ui-icon-navigation ui-btn-icon-right">地圖</a>         
+            </div>
+
+            <div id="travel_member_content" data-role="content">                
+            </div>             
+        </div>
+
+        <!-- Travel photo -->
+        <div id="travel_photo" data-role="page" data-position="fixed">
+            <div data-role="header">
+                <a href="javascript:toTravel();" class="ui-btn ui-icon-arrow-l ui-btn-icon-left">行程</a>
+                <h1>照片</h1>   
+                <a href="javascript:takePhoto();" class="ui-btn ui-icon-camera ui-btn-icon-right">照相</a>             
+            </div>
+
+            <div id="travel_photo_content" data-role="content">
+                <div class="photo"><a href="javascript:popupTravelPhoto();" ><img src="images/153.jpg" title=""/></a></div>
+                <div class="photo"><a href="javascript:popupTravelPhoto();" ><img src="images/153.jpg" title=""/></a></div>
+                <div class="photo"><a href="javascript:popupTravelPhoto();" ><img src="images/153.jpg" title=""/></a></div>
+                
+                <div class="clearboth"></div>
+                
+            </div>             
+            <div data-role="popup" id="popupBasic2" data-overlay-theme="b" data-theme="d" data-corners="false" style="display:none;">
+                <img id="popupImage2" src="images/food1.jpg" />
+            </div>
+        </div>
+                
+        <!-- Travel trip -->
+        <div id="travel_trip" data-role="page" data-position="fixed">
+            <div data-role="header">
+                <a href="javascript: toTravel();" class="ui-btn ui-icon-arrow-l ui-btn-icon-left">旅遊日記</a>
+                <h1>行程</h1>      
+                <a href="javascript: toTripMap();" class="ui-btn ui-icon-navigation ui-btn-icon-right">地圖</a>
+            </div>
+            <div id="trip_navbar_parent"></div>            
+
+            <div id="travel_trip_content" data-role="content">
+
+                <div id="trip_listview_parent" class="content-primary">	
+
+                </div><!--/content-primary -->	
+
+            </div>     
+
+            <div data-role="footer" data-position="fixed" style="background-color:#fff; padding-left:10px;">
+                <table width="95%">
+                    <tr>
+                        <td width="50%"><div align="center" class="rec_btn" onClick="travelComment()"><a href="javascript:;"><img src="images/bcomment.png" /></a></div></td>
+                        <td width="50%"><div align="center" class="rec_btn" onClick="takePhoto()"><a href="javascript:;"><img src="images/camera.png"/></a></div>
+                        </td></tr>
+                </table>            	
+            </div>
+
+        </div>
+
+		
+        <!-- Travel Comment -->
+        <div id="travel_comment" data-role="page" data-position="fixed">
+            <div data-role="header">
+                <a href="javascript:gotoTravelTrip();" class="ui-btn ui-icon-arrow-l ui-btn-icon-left">行程</a>
+                <h1>行程評論</h1>                
+            </div>
+            <div id="travel_comment_detail" data-role="content">
+
+            </div>  
+            <!-- comment -->
+            <div id="travel_comment_part" data-role="content" style="margin-top:-30px;" >
+                
+            </div> 
+
+            <div data-role="footer" data-position="fixed" style="background-color:#fff; padding-left:10px;">
+                <table width="95%">
+                    <tr><td width="65%"><textarea id="travel_comment_area" data-form="ui-body-b" class="input" data-theme="b" placeholder="有什麼話想說?..." style="width:90%;"></textarea></td><td><a href="javascript:commentPostPhoto('travel');" class="ui-btn" style="padding-top:0px; padding-bottom:0px;"><img src="images/camera.png" style="height:30px;"/></a>
+                        </td><td><a href="javascript:postComment('travel');" class="ui-btn">送出</a></td></tr>
+                </table>            	
+            </div>
+
+        </div>
+
+
+
+        <!-- Setting -->
+        <div id="setting" data-role="page" data-position="fixed">
+            <div data-role="header">
+                <a href="javascript:;" data-rel="back" class="ui-btn ui-icon-arrow-l ui-btn-icon-left">上一頁</a>
+                <h1>設定</h1>                
+            </div>
+
+            <div data-role="content">
+
+                <fieldset data-role="controlgroup" style="border-bottom:1px solid #000;">
+                    <legend>是否公開目前的位置?</legend>
+                    <input type="radio" name="radio-choice1" id="radio-choice-1a" value="choice-1"  />
+                    <label for="radio-choice-1a">公開</label>
+
+                    <input type="radio" name="radio-choice1" id="radio-choice-1b" value="choice-2" checked="checked" />
+                    <label for="radio-choice-1b">隱藏</label>
+
+                </fieldset>
+
+                <fieldset data-role="controlgroup" style="border-bottom:1px solid #000;">
+                    <legend>開啟位置自動更新(每30秒更新一次)?</legend>
+                    <input type="radio" name="radio-choice2" id="radio-choice-2a" value="choice-1" onClick="startWatchHandler();" />
+                    <label for="radio-choice-2a">開啟</label>
+
+                    <input type="radio" name="radio-choice2" id="radio-choice-2b" value="choice-2" checked="checked" onClick="stopWatchHandler()"  />
+                    <label for="radio-choice-2b">關閉</label>
+
+                </fieldset>            			
+
+            </div> 
+
+        </div>
+
+
+        <!-- Member -->
+        <div id="member" data-role="page" data-position="fixed">
+            <div data-role="header">
+                <a href="index.html#home" class="ui-btn ui-icon-arrow-l ui-btn-icon-left">首頁</a>
+                <h1>會員中心</h1>                
+            </div>
+
+            <div class="member_content" data-role="content">
+
+                <div align="center"><img id="member_avatar" src="images/member.png" style="width:50%;"/><br/><div id="member_username">尚未登入</div></div>
+                <div id="notlogin_section" align="center">
+                	<a href="index.html#register" class="ui-btn">註冊</a> 
+                    <a href="index.html#login" class="ui-btn">登入</a>
+                    －或者您也可以直接－<br/>
+                    <a href="javascript:fblogin();" class="ui-btn fb_btn">使用FB帳號登入</a>
+                    <!--<a href="javascript:wblogin();" class="ui-btn weibo_btn">使用新浪微博帳號登入</a>-->
+                </div>
+                <div id="login_section" align="center" style="display:none;">
+                	<a href="index.html#changeProfile" class="ui-btn">更新會員資訊</a>
+                	<a href="javascript:logout();" class="ui-btn">登出</a>
+                </div>
+
+            </div>             
+        </div>
+        
+        
+        <!-- Member -->
+        <div id="changeProfile" data-role="page" data-position="fixed">
+            <div data-role="header">
+                <a href="javascript:;" data-rel="back" class="ui-btn ui-icon-arrow-l ui-btn-icon-left">上一頁</a>
+                <h1>更新會員資訊</h1>                
+            </div>
+
+            <div class="member_content" data-role="content">
+
+                <div align="center">
+                	<img id="member_avatar2" src="images/member.png" style="width:50%;"/><br/>
+                	<a href="javascript:chooseMethod();" class="ui-btn">更換大頭圖</a>
+                </div>
+                
+                <div id="profile_section" align="center">
+                	<input type="text" id="change_username" placeholder="暱稱" />
+                    <input type="email" id="change_email" placeholder="E-mail" />
+                    <input type="password" id="change_pwd" placeholder="密碼(如果不要更換請留空)" /> 
+                    <input type="password" id="change_repwd" placeholder="密碼確認（再輸入一次）" /> 
+                    
+                    <a href="javascript:updateUserProfile();" class="ui-btn">更新</a>
+                </div>
+
+            </div>             
+        </div>
+
+        <!-- Register -->
+        <div id="register" data-role="page" data-position="fixed">
+            <div data-role="header">
+                <a href="javascript:;" data-rel="back" class="ui-btn ui-icon-arrow-l ui-btn-icon-left">上一頁</a>
+                <h1>註冊</h1>                
+            </div>
+
+            <div class="member_content" data-role="content">
+                <div align="center">
+                    歡迎加入皮生活<br/>
+                    <input type="text" id="register_username" placeholder="暱稱" />
+                    <input type="email" id="register_email" placeholder="E-mail" />
+                    <input type="password" id="register_pwd" placeholder="密碼" /> 
+                    <input type="password" id="register_repwd" placeholder="密碼確認（再輸入一次）" /> 
+
+                    <a href="javascript:register();" class="ui-btn">註冊</a>
+                </div>    
+
+
+            </div>             
+        </div>
+
+        <!-- Register -->
+        <div id="login" data-role="page" data-position="fixed">
+            <div data-role="header">
+                <a href="javascript:;" data-rel="back" class="ui-btn ui-icon-arrow-l ui-btn-icon-left">上一頁</a>
+                <h1>登入</h1>                
+            </div>
+
+            <div class="member_content" data-role="content">
+                <div align="center">
+                    歡迎回來！請使用皮生活帳號登入<br/>
+                    <input type="text" placeholder="E-mail" id="login_email" />
+                    <input type="password" placeholder="密碼" id="login_password" />  			
+                    <a href="javascript:login();" class="ui-btn">登入</a>
+                    －或者您也可以直接－<br/>
+                    <a href="javascript: fblogin();" class="ui-btn fb_btn">使用FB帳號登入</a>
+                    <!--<a href="javascript: wblogin();" class="ui-btn weibo_btn">使用新浪微博帳號登入</a>-->
+                                     
+                    
+                </div>
+
+            </div>             
+        </div>
+
+
+        <!-- Msg -->
+        <div id="msg" data-role="page" data-position="fixed">
+            <div data-role="header">
+                <a href="index.html#home" class="ui-btn ui-icon-arrow-l ui-btn-icon-left">首頁</a>
+                <h1>訊息中心</h1>                
+            </div>
+
+            <div data-role="content">
+                <div id="message_container" class="content-primary">	
+                    <ul data-role="listview">
+                        <li><a href="javascript:;">
+                                <img src="images/message.png" />
+                                <h3>溯溪王體驗</h3>
+                                <p>超酷的溯溪體驗遊</p>
+                            </a></li>
+                        <li><a href="javascript:;">
+                                <img src="images/message.png" />
+                                <h3>觀賞花東大海</h3>
+                                <p>花蓮的風景真漂亮~</p>
+                            </a></li>
+                        <li><a href="javascript:;">
+                                <img src="images/message.png" />
+                                <h3>花蓮民宿</h3>
+                                <p>累了一天,終於可睡大覺了!</p>
+                            </a></li>			
+                    </ul>
+                </div><!--/content-primary -->	                           	          	                        	
+            </div> 
+
+        </div>
+        
+        <!-- Msg Detail-->
+        <div id="msg_detail" data-role="page" data-position="fixed">
+        	 <div data-role="header">
+                <a href="javascript: gotoMsg();" class="ui-btn ui-icon-arrow-l ui-btn-icon-left">列表</a>
+                <h1 id="msg_title"></h1>                
+            </div>
+            <div data-role="content">
+            	<div id="msg_content" class="content-primary">
+                </div>
+            </div>
+        </div>
+
+        <!-- Photo Confirm (After taking picture -->
+        <div id="photo_confirm" data-role="page" data-position="fixed">
+            <div data-role="header">
+                <a href="javascript:;" data-rel="back" class="ui-btn ui-icon-arrow-l ui-btn-icon-left">上一頁</a>
+                <h1>上傳確認</h1> 
+                <a href="javascript:postPhoto();" class="ui-btn ui-icon-camera ui-btn-icon-right">上傳</a>             
+            </div>
+
+            <div data-role="content">
+                <div class="content-primary">	
+                    您確認要上傳這張照片嗎？<br/>
+                    <small>這代表了本團所有人都可以在此行程相簿看到這張照片</small>
+                    <div class="photo_preview"><img id="photo_tmp" src="" /></div>
+                </div><!--/content-primary -->	                           	          	                        	
+            </div> 
+
+        </div>
+        
+        <!-- Comment Photo Confirm (After taking picture -->
+        <div id="comment_photo_confirm" data-role="page" data-position="fixed">
+            <div data-role="header">
+                <a href="javascript:;" data-rel="back" class="ui-btn ui-icon-arrow-l ui-btn-icon-left">上一頁</a>
+                <h1>上傳確認</h1> 
+                <a href="javascript:postCommentAndPhoto();" class="ui-btn ui-icon-camera ui-btn-icon-right">評論</a>             
+            </div>
+
+            <div data-role="content">
+                <div class="content-primary">	
+                    <div data-role="fieldcontain">                    	
+                        <textarea name="comment_textarea" id="comment_textarea" placeholder="有甚麼要說的嗎?"></textarea>
+                    </div>
+                    <div class="photo_preview"><img id="comment_photo_tmp" src="" /></div>
+                </div><!--/content-primary -->	                           	          	                        	
+            </div> 
+
+        </div>
+        
+        <!-- MAP -->
+        <div id="map" data-role="page" data-position="fixed">
+            <div data-role="header">
+                <a href="javascript:;" data-rel="back" class="ui-btn ui-icon-arrow-l ui-btn-icon-left">上一頁</a>
+                <h1 id="map_title">Google Map</h1>
+                
+            </div>
+            <div role="main" class="ui-content" id="map-canvas">
+                <!-- map loads here... -->
+            </div>
+            
+        </div>
+
+        
+
+		<script type="text/javascript" src="js/Weibo.js"></script> 
+        <script type="text/javascript" src="js/facebookConnectPlugin.js"></script>
+
+        <script>
+			
+			
+            var domain = "http://www.flbk.com.tw/";
+            //var domain = "http://www.pilife.com.tw/";
+            var apidomain = domain+"Api_App/";
+            //var domain = "http://api2.aipi2.com/";
+            //var apidomain = domain;
+            var extension = ".aspx";
+            //var extension = "";
+            
+            var travelist = [];
+			var triplist = [];
+			var trip_id = '';
+            var mode = '';
+            var detail_id = '';
+            var token = '';
+			var latlng = '';
+            var itemlist = [];
+			var memberlist = [];
+			
+			var msglist = [];
+			
+			//Map Related variable
+            var defaultLatLng = new google.maps.LatLng(25.0333, 121.6333);
+            var map;
+            var map_markers = [];
+            var current_bounds;
+            var current_day=1;
+            var infowindow = null;
+			var directionsDisplay;
+            
+            var itemlist_start = 0;
+            var saved_order_by = "";
+            var saved_mode = "";
+            var current_item = null;
+            var recommended_search = [];
+            var page_pointer = "";
+            
+            
+			
+			
+			//Template
+            function ItemHTML(item) {
+
+                var tmp = '<div class="item-image"><a href="javascript:changeDetail(' + item.id + ');"><img src="' + item.img + '" style="width:100%"/></a></div>';
+                tmp += '<div class="titleDistance">';
+                tmp += '	<div class="item-title"><a href="javascript:changeDetail(' + item.id + ');">' + item.title + '</a></div>';
+                tmp += '    <div class="item-distance"><img src="images/marker.png" style="height:15px;" /> ' + (item.distance) + '</div>';
+                tmp += '    <div class="clearboth"></div>';
+                tmp += '</div>';
+                tmp += '<div class="item-spec">';
+                tmp += '	' + item.view + ' 人瀏覽 | ' + item.fav + ' 人收藏 ';
+
+                if (item.has_promotion) {
+                    tmp += '| <span class="promotion"><img src="images/star.png" style="width:15px; height:15px;"/>優惠中</span>';
+                }
+
+                tmp += '</div>';
+                tmp += '<div class="item-buttons">';
+                tmp += '	<div class="item-button"><a href="javascript:comment(\'' + item.id + '\');"><img src="images/comment.png" style="height:15px;" /> 評論</a></div>';
+
+                if (item.is_fav) {
+                    tmp += '    <div class="item-button"><a href="javascript:addFav(\'' + item.id + '\');"><img id="is_fav' + item.id + '" src="images/star.png" style="height:15px;" data-current="1" /> 收藏</a></div>';
+                } else {
+                    tmp += '    <div class="item-button"><a href="javascript:addFav(\'' + item.id + '\');"><img id="is_fav' + item.id + '" src="images/fav.png" style="height:15px;" data-current="0" /> 收藏</a></div>';
+                }
+                tmp += '    <div class="item-button"><a href="javascript:window.plugins.socialsharing.share(\''+domain+'scenerDetail.aspx?lm=' + item.id + '\',\''+item.title+'\');"><img src="images/go.png" style="height:15px;" /> 分享</a></div>';
+
+                tmp += '    <div class="item-button"><a href="javascript:bringMeThere(\'' + item.addr + '\',\'' + item.daddr + '\');"><img src="images/go.png" style="height:15px;" /> 帶我去</a></div>';
+                tmp += '    <div class="clearboth"></div>';
+                tmp += '</div>';
+
+                return tmp;
+
+            }
+
+            function TravelItemHTML(item) {
+
+                var tmp = '<div class="item-image"><a href="javascript:changeTravelTrip(' + item.id + ');"><img src="' + item.img + '" style="width:100%"/></a></div>';
+                tmp += '<div class="titleDistance">';
+                tmp += '	<div class="item-title">' + item.title + '</div>';
+                tmp += '    <div class="clearboth"></div>';
+                tmp += '</div>';
+                tmp += '';
+                tmp += '<div class="item-spec"><table width="100%"><tr>';
+                tmp += '	<td><div align="left">' + item.departdate + '</div></td><td><div align="center">' + item.days + '天</div></td><td><div align="center">' + item.photos + '照片</div></td><td><div align="center">' + item.member + ' 成員</div></td>';
+                tmp += '</tr></table></div>';
+                tmp += '<div class="item-buttons">';
+                tmp += '	<div class="item-button2"><a href="javascript:changeTravelTrip(' + item.id + ');"><img src="images/trip.png" style="height:15px;" /> 行程</a></div>';
+                tmp += '    <div class="item-button2"><a href="javascript:changeTravelPhoto(' + item.id + ');"><img src="images/camera.png" style="height:15px;" data-current="1" /> 照片</a></div>';
+                tmp += '    <div class="item-button2"><a href="javascript:changeTravelMember(' + item.id + ');"><img src="images/group.png" style="height:15px;" /> 成員</a></div>';
+                tmp += '    <div class="clearboth"></div>';
+                tmp += '</div>';
+
+                return tmp;
+
+            }
+
+            function ItemDescHTML(item) {
+                var tmp = '';
+                var i = 0;
+                if (item.more_img.length > 0) {
+                    tmp += '<div class="ui-grid-c">';
+                    var block = "";
+                    for (var j = 0; j < item.more_img.length; j++) {
+                        switch (j % 4) {
+                            case 0:
+                                block = "a";
+                                break;
+                            case 1:
+                                block = "b";
+                                break;
+                            case 2:
+                                block = "c";
+                                break;
+                            case 3:
+                                block = "d";
+                                break;
+                        }
+                        tmp += '<div class="ui-block-' + block + '"><a href="javascript:popup(\'' + item.more_img[j] + '\');" ><img src="' + item.more_img[j] + '" style="width:90%"/></a></div>';
+                    }
+                    tmp += '</div>';
+                    i++;
+                }
+                return tmp;
+            }
+        
+            function ItemDetailUserShare(item){
+                
+                var tmp = '';
+                
+                if(item.user_share.length > 0){
+                    for(var i=0; i < item.user_share.length; i++) {
+                        tmp += '<div class="share_photo"><img src="'+item.user_share[i]+'"/></div>';
+                    }
+                }
+                
+                tmp += '<div class="clearboth"></div>';
+                return tmp;
+                
+            }
+        
+            function itemComment(item_comment){
+                
+                var tmp = '';
+                if(item_comment.length > 0){
+                    
+                    for(var i=0; i<item_comment.length; i++){
+                        tmp += '<div class="item"><div class="avatar"><img src="'+item_comment[i].avatar+'" style="width:100%"/><div class="author">'+item_comment[i].author+'</div></div><div class="comment">'+item_comment[i].comment;
+						if( item_comment[i].pic != "" ) {
+							tmp += '<div class="pic"><img src="'+item_comment[i].pic+'" style="width:100%;" /></div>';	
+						}
+						
+						tmp += '<div class="date">'+item_comment[i].time+'</div></div><div class="clearboth"></div></div>';
+                    }
+                    
+                }
+                
+                return tmp;
+                
+                
+            }
+			
+
+			//Go to Section
+			function gotoDetail(){
+				changeDetail(detail_id);
+			}
+			
+			function gotoList(){
+				changePage(mode);
+			}			
+			
+			function gotoMsg(){
+                
+                page_pointer = "msg";
+				
+				$.mobile.changePage("index.html#msg");
+				
+				$("#message_container").html("");
+				$.ajax({
+                	type: "GET",
+                    url: apidomain + "msglist"+extension,
+                        data: {"token": token},
+                        dataType: "json",
+                        beforeSend: function(xhr) {
+                           $.mobile.loading("show", {
+                                            text: "系統讀取中",
+                                            textVisible: true,
+                                            theme: "z",
+                                            html: ""
+                                            });
+                        }
+                 }).done(function(data) {
+						try {
+                        	console.log(data);                                
+                            if (data.status == 'OK') {                                    
+								msglist = data.result;	
+								
+								var ul = $("<ul>").attr({"data-role":"listview"});
+								for(var i=0; i<msglist.length; i++){					
+																			
+									var li = $("<li>").html('<a href="javascript:gotoMsgDetail('+msglist[i].id+');"><img src="'+msglist[i].pic+'" /><h3>'+msglist[i].title+'</h3><p>'+msglist[i].time+'</p></a>');
+									ul.append(li);																																									
+								}																				
+								$("#message_container").append(ul).trigger('create');
+								
+							}
+						 } catch (err) {
+                               alert(err.message);
+                         }    
+						 
+						 if(typeof data.ads != 'undefined') {
+							 $(".ads_image").attr({"src": data.ads.img, "onclick": 'window.open(\''+data.ads.url+'\', \'_system\');'});
+						 }
+						 
+                         $.mobile.loading("hide");
+					
+				  }).fail(function(e){                            
+                         console.log("itemlist ajax error "+JSON.stringify(e));
+						 $.mobile.loading("hide");							
+                  });
+				
+			}
+			
+			function gotoMsgDetail(msg_id){
+                
+                page_pointer = "msg_detail";
+                
+				$.mobile.changePage("index.html#msg_detail");
+				$.each(msglist, function(index, msg){					
+					if(msg.id == msg_id) {						
+						$("#msg_title").html(msg.title);
+						$("#msg_content").html(msg.comment);							
+					}
+															
+				});				
+				
+			}
+			
+			function gotoTravelTrip(){
+                
+                page_pointer = "travel_trip";
+                changeTravelTrip(detail_id);
+			}						
+
+
+            function getItemByID(id) {
+				
+                var no_cache = true;
+                
+                
+				for (var i = 0; i < itemlist.length; i++) {
+					if (id == itemlist[i].id) {
+                        no_cache = false;
+						current_item = itemlist[i];
+                        showItemDetailContent(current_item);
+					}
+				}
+				
+				
+                if(no_cache) {
+                    $.ajax({
+                        type: "GET",
+                        url: apidomain + "getitem"+extension,
+                        data: {"item_id": id, "token": token, "latlng": latlng },
+                        dataType: "json",
+                        beforeSend: function(xhr) {
+                           $.mobile.loading("show", {
+                                            text: "系統讀取中",
+                                            textVisible: true,
+                                            theme: "z",
+                                            html: ""
+                                            });
+                        }
+                    }).done(function(data) {
+                           try {
+                                console.log(data);                                
+                                if (data.status == 'OK') {                                    
+									itemlist = data.result;
+                                    console.log("id = "+id);
+									for (var i = 0; i < itemlist.length; i++) {
+										if (id == itemlist[i].id) {
+											current_item = itemlist[i];
+                                            showItemDetailContent(current_item);
+										}
+									}
+									                                 
+                                } else {
+                                    alert(data.result);
+                                    
+                                }
+                            } catch (err) {
+                                alert(err.message);
+                            }
+
+                        
+                            $.mobile.loading("hide");
+                    }).fail(function(e){
+                      navigator.notification.alert("伺服器資料格式錯誤，請洽非來不可API工程師",function(){},'系統錯誤','我知道了');
+                      console.log("itemlist ajax error"+JSON.stringify(e));
+                    });
+                }
+                
+            }
+
+            //from Homepage to Travel
+            function toTravel() {
+                
+                page_pointer = "travel";
+                $.mobile.changePage("index.html#travel");
+				
+				$("#travelcontent").html("");
+				$.ajax({
+                	type: "GET",
+                    url: apidomain + "travelist"+extension,
+                        data: {"token": token},
+                        dataType: "json",
+                        beforeSend: function(xhr) {
+                           $.mobile.loading("show", {
+                                            text: "系統讀取中",
+                                            textVisible: true,
+                                            theme: "z",
+                                            html: ""
+                                            });
+                        }
+                 }).done(function(data) {
+						try {
+                        	console.log(data);                                
+                            if (data.status == 'OK') {                                    
+								travelist = data.result;				
+								for (var i = 0; i < travelist.length; i++) {
+									var tmp = TravelItemHTML(travelist[i]);
+									var item = $("<div>").attr("class", "item").html(tmp);
+									$("#travelcontent").append(item);
+								}
+							}
+						 } catch (err) {
+                               alert(err.message);
+                         }    
+						 
+						 if(typeof data.ads != 'undefined') {
+							 $(".ads_image").attr({"src": data.ads.img, "onclick": 'window.open(\''+data.ads.url+'\', \'_system\');'});
+						 }
+						 
+                         $.mobile.loading("hide");
+					
+				  }).fail(function(e){                            
+                         console.log("itemlist ajax error"+JSON.stringify(e));
+                         navigator.notification.alert("伺服器資料格式錯誤，請洽非來不可API工程師",function(){},'系統錯誤','我知道了');
+                         $.mobile.loading("hide");
+                  });
+            }
+        
+        
+        
+			
+			function renderItemlist(order_by){
+                
+                
+                
+                //第一次讀清單就需要把內容清空
+                if(saved_order_by != order_by | saved_mode != mode) {
+                    itemlist_start = 0;
+                    $("#pagecontent").html('');
+                }
+                
+                
+                saved_order_by = order_by;
+                saved_mode = mode;
+                console.log(apidomain + "itemlist"+extension+"?type="+mode+"&token="+token+"&limit=20&start="+itemlist_start+"&latlng="+latlng+"&order_by="+order_by);
+                
+                //get data
+				$.ajax({
+                        type: "GET",
+                        url: apidomain + "itemlist"+extension,
+                        data: {"type": mode, "token": token, "limit": 20, "start": itemlist_start, "latlng": latlng, "order_by":order_by },
+                        dataType: "json",
+                        beforeSend: function(xhr) {
+                           $.mobile.loading("show", {
+                                            text: "系統讀取中",
+                                            textVisible: true,
+                                            theme: "z",
+                                            html: ""
+                                            });
+                        }
+                    }).done(function(data) {
+                           try {
+                                //console.log(data);
+                                if (data.status == 'OK') {                                    
+									itemlist = data.result;  
+									//display data 
+									for (var i = 0; i < itemlist.length; i++) {
+					
+										//if (mode == itemlist[i].type) {
+                            
+											var tmp = ItemHTML(itemlist[i]);
+											var item = $("<div>").attr("class", "item").html(tmp);
+											$("#pagecontent").append(item);
+                            
+										//}
+					
+									}
+                            
+                                    itemlist_start+=(parseInt(itemlist.length));
+									                                  
+                                } else {
+                                    alert(data.result);
+                                    
+                                }
+                            } catch (err) {
+                                alert(err.message);
+                            }
+							
+							if(typeof data.ads != 'undefined') {
+								 $(".ads_image").attr({"src": data.ads.img, "onclick": 'window.open(\''+data.ads.url+'\', \'_system\');'});
+							 }
+
+                        
+                            $.mobile.loading("hide");
+                    }).fail(function(e){
+                            console.log("itemlist ajax error ");
+                            console.log(JSON.stringify(e, null, 4));
+                            navigator.notification.alert("伺服器資料格式錯誤，請洽非來不可API工程師",function(){},'系統錯誤','我知道了');
+                            $.mobile.loading("hide");
+                    });
+				
+			}
+
+            //From Homepage to Itemlist
+            function changePage(md) {
+                mode = md;
+                var pagetitle = "";
+                page_pointer = "itemlist";
+                
+                $("#detailbackbtn").attr("href","javascript: gotoList();");
+
+                $.mobile.changePage("index.html#itemlist");
+                switch (mode) {
+                    case "food":
+                        pagetitle = "美食";
+                        break;
+                    case "hotspot":
+                        pagetitle = "景點";
+                        break;
+                    case "acco":
+                        pagetitle = "住宿";
+                        break;
+                    case "promotion":
+                        pagetitle = "優惠";
+                        break;
+                    case "favorite":
+                        pagetitle = "收藏";
+                        break;
+                }
+				
+				$("#pagetitle").html(pagetitle);                
+				
+                if(saved_order_by==""){
+                    order_by = "id";
+                } else {
+                    order_by = saved_order_by;
+                }
+                itemlist_start = 0;
+                
+                var is_login = localStorage.getItem("is_login");
+                console.log(mode + " && " +is_login);
+                //alert(is_login);
+                if(mode == "favorite" && !is_login) {
+                    $("#pagecontent").html('<div align="center" style="margin-top:80px">您目前尚未登入，無法讀取收藏列表<br/><a href="index.html#member" class="ui-btn btn-red">前往登入</a></div>');
+                    return;
+                }
+
+				renderItemlist(order_by);
+                
+                
+            }
+        
+            function showItemDetailContent(item){
+                
+                page_pointer = "itemdetail";
+                
+                var tmp = ItemHTML(item);
+                $("#detailtitle").html(item.title);
+                $("#detail_desc").html(item.desc);
+                
+                var tmp2 = ItemDescHTML(item);
+                $("#more_img").html(tmp2);
+                
+                var tmp3 = ItemDetailUserShare(item);
+                $("#detailcontent_share").html(tmp3);
+                
+                
+                var telpart = $("<div>").attr("class", "item").html("地址：" + item.addr + "<br/>電話：" + item.tel + "<br/>營業時間：" + item.shoptime + "<br/>" + item.remarks);
+                $("#detailcontent_tel").html("");
+                $("#detailcontent_tel").append(telpart);
+                
+                var contentpart = $("<div>").attr("class", "item").html(tmp);
+                $("#detailcontent").html("");
+                $("#detailcontent").append(contentpart);
+                
+                
+                
+            }
+
+            //From ItemList to Item Detail
+            function changeDetail(id) {
+                detail_id = id;
+                $.mobile.changePage("index.html#detail");
+
+                getItemByID(id);
+                
+                
+
+                
+                //$.mobile.loading("hide");
+
+            }
+			
+			function goSearch(){
+				
+				var keywords = $("#search-basic").val();
+				$("#search_recommend").html("");
+				$("#search_result").html("");
+				//get data
+				$.ajax({
+                        type: "GET",
+                        url: apidomain + "search"+extension,
+                        data: {"type": mode, "token": token, "latlng": latlng, "keywords":keywords },
+                        dataType: "json",
+                        beforeSend: function(xhr) {
+                           $.mobile.loading("show", {
+                                            text: "系統搜尋中",
+                                            textVisible: true,
+                                            theme: "z",
+                                            html: ""
+                                            });
+                        }
+                    }).done(function(data) {
+                           try {
+                                console.log(data);                                
+                                if (data.status == 'OK') {
+                            
+									itemlist = data.result;
+                            
+                                    if(itemlist.length > 0) {
+                            
+                                        //display data
+                                        for (var i = 0; i < itemlist.length; i++) {
+					
+                                            if (mode == itemlist[i].type) {
+                                                var tmp = ItemHTML(itemlist[i]);
+                                                var item = $("<div>").attr("class", "item").html(tmp);
+                                                $("#search_result").append(item);
+                                            }
+					
+                                        }
+                            
+                                    } else {
+                            
+                                        $("#search_result").html('<div align="center" style="margin-top:80px">您搜尋的關鍵字沒有任何結果，也許是這個資料不在我們的資料庫中，或您的所在位置距離目標太遠</div>');
+                            
+                            
+                                    }
+                            
+                                } else {
+                                    alert(data.result);
+                                    
+                                }
+                            } catch (err) {
+                                alert(err.message);
+                            }
+							
+							if(typeof data.ads != 'undefined') {
+								 $(".ads_image").attr({"src": data.ads.img, "onclick": 'window.open(\''+data.ads.url+'\', \'_system\');'});
+							 }
+
+                        
+                            $.mobile.loading("hide");
+                    }).fail(function(e){
+                            navigator.notification.alert("伺服器資料格式錯誤，請洽非來不可API工程師",function(){},'系統錯誤','我知道了');
+                            console.log("search ajax error"+JSON.stringify(e));
+                            $.mobile.loading("hide");
+                    });
+				
+			}
+        
+
+            //General Ajax
+            $(document).bind("mobileinit", function() {
+                // Make your jQuery Mobile framework configuration changes here!
+                $.support.cors=true;
+                $.mobile.allowCrossDomainPages = true;
+            });
+
+            //Item Detail Popup
+            function popup(imageurl) {
+                $("#popupImage").attr("src", imageurl);
+                $("#popupBasic").show();
+                $("#popupBasic").popup("open")
+            }
+			
+			//Item Detail Popup
+            function popupTravelPhoto(imageurl) {
+                $("#popupImage2").attr("src", imageurl);
+                $("#popupBasic2").show();
+                $("#popupBasic2").popup("open")
+            }
+
+            $(document).on("pageinit", function() {
+                $('#popupBasic').on({
+                    popupafterclose: function() {
+                        $("#popupBasic").hide();
+                    }
+                });
+                $('#popupBasic2').on({
+                    popupafterclose: function() {
+                        $("#popupBasic2").hide();
+                    }
+                });
+                           
+            });
+			
+            
+            /********************************
+             地圖部分
+            ********************************/
+			function putMyLocationinArray(){
+				// Add an overlay to the map of current lat/lng
+				var marker = new google.maps.Marker({
+						position: defaultLatLng,
+						map: map,
+						title: "我的位置",
+				});
+					
+				map_markers.push(marker);
+				
+			}
+			
+			//Markers Manipulation
+			function setAllMap(map){
+				for (var i = 0; i < map_markers.length; i++) {					
+					map_markers[i].setMap(map);
+				}			
+			}
+			
+			function clearMarkers(){
+					setAllMap(null);
+			}
+			
+			function showMarkers(){
+				
+				console.log("showMarkers");
+				setAllMap(map);
+				   
+				//infoWindow Part   
+				infowindow = new google.maps.InfoWindow();                
+				for (var i = 0; i < map_markers.length; i++) {
+					   
+						var marker = map_markers[i];
+						google.maps.event.addListener(marker, 'click', function(){
+														   infowindow.setContent('<div style="width: 300px; height:100px;">'+this.title+'</div>');
+														   infowindow.open(map, this);
+														   
+														   });                                                                                
+																
+				}
+					 
+				
+				//Arrange the bounds
+				var bounds = new google.maps.LatLngBounds();
+				
+				$.each(map_markers, function(index, marker) {
+					bounds.extend(marker.position);
+				});	
+				
+				map.fitBounds(bounds);
+				console.log(map.getCenter());
+						   
+			}	
+			
+			function deleteMarkers(){
+				console.log("deleteMarkers");
+				clearMarkers();
+				map_markers = [];
+				
+				if(directionsDisplay!=null) {
+					directionsDisplay.setMap(null);	
+				}
+			}
+			
+
+            //帶我去
+            function bringMeThere(addr, daddr) {
+				console.log("bringMeThere");                            
+                $.mobile.changePage("index.html#map");
+                $("#map_title").html("帶我去");
+				deleteMarkers();
+				
+				
+                var dest;
+                if(daddr!=""){
+                        
+                   var tmp = daddr.split(",");
+                   dest = new google.maps.LatLng(tmp[0], tmp[1]);
+				   var marker = new google.maps.Marker({
+						position: dest,
+						map: map,
+						title: addr,
+					});
+					putMyLocationinArray();
+					map_markers.push(marker);
+                        
+                 } else {
+                   dest = addr;
+				   console.log("項目沒有提供座標, 可能會出錯");
+                 }
+                    
+				 var directionsService = new google.maps.DirectionsService();
+				 directionsDisplay = new google.maps.DirectionsRenderer();
+				 directionsDisplay.setMap(map);	
+				 				 				 					                    
+                 var request = {
+                        origin: defaultLatLng,
+                        destination:dest,
+                        travelMode: google.maps.TravelMode.DRIVING
+                 };
+                 directionsService.route(request, function(response, status) {
+                        if (status == google.maps.DirectionsStatus.OK) {
+                            directionsDisplay.setDirections(response);
+							console.log("Direction service OK");
+                            
+                        }
+                 });
+
+            }                    
+
+        
+            //member所在
+            function memberLocationMap(username, lat, lng, location){
+                console.log("memberLocationMap"); 
+				$.mobile.changePage("index.html#map");
+                $("#map_title").html(username);
+				deleteMarkers();
+				putMyLocationinArray();
+								                                                                
+                var memberlatLng = new google.maps.LatLng(lat, lng);                
+                var member_marker = new google.maps.Marker({
+                                                    position: memberlatLng,
+                                                    map: map,
+                                                    title: username+'<br/>所在位置:'+location
+                                                    });
+                map_markers.push(member_marker);                
+                showMarkers();                
+                
+            }
+			
+			//所有會員的地圖
+			function allMembersMap(){
+				console.log("allMembersMap"); 
+				$.mobile.changePage("index.html#map");
+				$("#map_title").html("所有成員地圖");
+				
+				deleteMarkers();
+				putMyLocationinArray();
+				
+				$.each(memberlist, function(index, member){
+					
+					var member_marker = new google.maps.Marker({
+						position: new google.maps.LatLng(member.lat, member.lng),
+						map: map,
+						title: member.username+'<br/>所在位置:'+member.location,
+					});									   
+					map_markers.push(member_marker);
+					
+				});				
+				showMarkers();								
+				
+			}
+        
+        
+            //toTripMap
+            //從行程的右上方點擊「地圖」
+            function toTripMap(){
+                                                           
+                $.mobile.changePage("index.html#map");
+                $("#map_title").html("第"+current_day+"天行程");
+				deleteMarkers();  
+				putMyLocationinArray();                                  
+                
+                for(var i=0; i<triplist.length; i++){
+                    if( triplist[i].day == current_day ) {
+                        for(var j=0; j < triplist[i].trip.length; j++) {
+                            
+                            var trip_item_marker = new google.maps.Marker({
+                            	position: new google.maps.LatLng(triplist[i].trip[j].lat, triplist[i].trip[j].lng),
+                                map: map,
+                                title: triplist[i].trip[j].title+'<br/><img src="'+triplist[i].trip[j].img+'" style="width:50px;"/>',
+                            });                           
+                            map_markers.push(trip_item_marker);                            
+                            
+                        }													
+                    }										
+                }
+                
+                showMarkers();
+                //triplist
+                //current_day
+                
+            }
+        
+
+            //收藏
+            function addFav(item_id) {
+
+                var current = $("#is_fav" + item_id).data("current");
+                var is_fav = 0;
+                if (current == 0) {
+                    is_fav = 1;
+                }
+                
+                $.ajax({
+                       type: "POST",
+                       url: apidomain + "addfav"+extension,
+                       data: {"item_id":item_id, "token":token, "is_fav":is_fav},
+                       dataType: "json",
+                       beforeSend: function(xhr) {
+                            $.mobile.loading("show", {
+                                        text: "更新中",
+                                        textVisible: true,
+                                        theme: "z",
+                                        html: ""
+                                        });
+                            }
+                }).done(function(data) {
+                            try {
+                               console.log(data.result.item_id + ' ' + data.result.is_fav);
+                               if (data.status == 'OK') {
+                                    if(data.result.is_fav == 1) {
+                                        $("#is_fav" + data.result.item_id).attr("src","images/star.png").data("current", 1);
+                                    } else {
+                                        $("#is_fav" + data.result.item_id).attr("src","images/fav.png").data("current", 0);
+                                    }
+                               
+                               } else {
+                                    alert(data.result);
+                               }
+                            } catch (err) {
+                               alert(err.message);
+                            }
+							
+							if(typeof data.ads != 'undefined') {
+								 $(".ads_image").attr({"src": data.ads.img, "onclick": 'window.open(\''+data.ads.url+'\', \'_system\');'});
+							 }
+							
+                            $.mobile.loading("hide");
+                }).fail(function(e){
+                            navigator.notification.alert("伺服器資料格式錯誤，請洽非來不可API工程師",function(){},'系統錯誤','我知道了');
+                            console.log("addfav ajax error: "+JSON.stringify(e));
+                            $.mobile.loading("hide");
+                });
+                
+
+            }
+			
+			/********************************
+             comment and Photo
+            ********************************/
+        	
+			function travelComment(){
+				
+				$.mobile.changePage("index.html#travel_comment");
+				
+				//get data
+                $.ajax({
+                       type: "GET",
+                       url: apidomain + "travelcommentlist"+extension,
+                       data: {"travel_id": detail_id},
+                       dataType: "json",
+                       beforeSend: function(xhr) {
+                       $.mobile.loading("show", {
+                                        text: "系統讀取中",
+                                        textVisible: true,
+                                        theme: "z",
+                                        html: ""
+                                        });
+                       }
+                }).done(function(data) {
+                    try {
+                        console.log(data);
+                        if (data.status == 'OK') {
+                            var travel_comment = data.result;
+                            var tmp = itemComment(travel_comment);
+                            $("#travel_comment_part").html(tmp);
+                        
+                        } else {
+                            alert(data.result);
+                        }
+                    } catch (err) {
+                        alert(err.message);
+                    }
+                    
+					if(typeof data.ads != 'undefined') {
+							 $(".ads_image").attr({"src": data.ads.img, "onclick": 'window.open(\''+data.ads.url+'\', \'_system\');'});
+					}
+					    
+                    $.mobile.loading("hide");
+                }).fail(function(e){
+                    
+                        navigator.notification.alert("伺服器資料格式錯誤，請洽非來不可API工程師",function(){},'系統錯誤','我知道了');
+                        console.log("travelcommentlist ajax error: "+JSON.stringify(e));
+                        $.mobile.loading("hide");
+                });
+				
+				
+			}
+			
+            //goto Comment Page
+            function comment(id) {
+
+                detail_id = id;
+                $.mobile.changePage("index.html#comment");
+
+                getItemByID(id);
+                var item = current_item;
+
+                var tmp = ItemHTML(item);
+                $("#commenttitle").html(item.title);
+
+                var item = $("<div>").attr("class", "item").html(tmp);
+                $("#comment_detail").html("");
+                $("#comment_detail").append(item);
+                
+                
+                //get data
+                $.ajax({
+                       type: "GET",
+                       url: apidomain + "commentlist"+extension,
+                       data: {"item_id": id},
+                       dataType: "json",
+                       beforeSend: function(xhr) {
+                       $.mobile.loading("show", {
+                                        text: "系統讀取中",
+                                        textVisible: true,
+                                        theme: "z",
+                                        html: ""
+                                        });
+                       }
+                }).done(function(data) {
+                    try {
+                        console.log(data);
+                        if (data.status == 'OK') {
+                            var item_comment = data.result;
+                            var tmp = itemComment(item_comment);
+                            $("#comment_part").html(tmp);
+                        
+                        } else {
+                            alert(data.result);
+                        }
+                    } catch (err) {
+                        alert(err.message);
+                    }
+					
+					if(typeof data.ads != 'undefined') {
+							 $(".ads_image").attr({"src": data.ads.img, "onclick": 'window.open(\''+data.ads.url+'\', \'_system\');'});
+					}
+                        
+                    $.mobile.loading("hide");
+                }).fail(function(e){
+                    console.log("commentlist ajax error: "+JSON.stringify(e));
+                    navigator.notification.alert("伺服器資料格式錯誤，請洽非來不可API工程師",function(){},'系統錯誤','我知道了');
+                    $.mobile.loading("hide");
+                });
+
+            }
+        
+            //post Comment
+            function postComment(target){
+                
+                var is_login = localStorage.getItem("is_login");
+                if(!is_login) {
+                    navigator.notification.alert("您目前尚未登入，無法評論",function(){},'未登入','我知道了');
+                    return;
+                }
+                
+                
+                
+				if(target == "item") {				
+                	var comment = $("#comment_area").val();
+					var ajax_target = apidomain + "postcomment"+extension;
+					var ajax_data   = {"item_id":detail_id, "token":token, "comment":comment};
+				} else if (target == "travel") {
+					var comment = $("#travel_comment_area").val();
+					var ajax_target = apidomain + "posttravelcomment"+extension;
+					var ajax_data   = {"travel_id":detail_id, "token":token, "comment":comment};
+				}
+				
+                //get data
+                $.ajax({
+                       type: "POST",
+                       url: ajax_target,
+                       data: ajax_data,
+                       dataType: "json",
+                       beforeSend: function(xhr) {
+                            $.mobile.loading("show", {
+                                        text: "系統讀取中",
+                                        textVisible: true,
+                                        theme: "z",
+                                        html: ""
+                                        });
+                       }
+                }).done(function(data) {
+                    try {
+                        console.log(data);
+                        if (data.status == 'OK') {
+							
+							var comment = data.result;
+							var tmp = itemComment(comment);
+							
+							if(target == "item") {																
+								$("#comment_part").append(tmp);
+								$("#comment_area").val("");
+							} else if (target == "travel") {
+								$("#travel_comment_part").append(tmp);
+								$("#travel_comment_area").val("");								
+							}
+                               
+                        } else {
+                            alert(data.result);
+                        }
+                    } catch (err) {
+                        alert(err.message);
+                    }
+					
+					if(typeof data.ads != 'undefined') {
+							 $(".ads_image").attr({"src": data.ads.img, "onclick": 'window.open(\''+data.ads.url+'\', \'_system\');'});
+						 }
+					
+                    $.mobile.loading("hide");
+                }).fail(function(e){
+                    console.log("postcomment ajax error "+JSON.stringify(e));
+                    navigator.notification.alert("伺服器資料格式錯誤，請洽非來不可API工程師",function(){},'系統錯誤','我知道了');
+                    $.mobile.loading("hide");
+                });
+                
+            }
+			
+			function commentPostPhoto(target){
+                
+                var is_login = localStorage.getItem("is_login");
+                if(!is_login) {
+                    navigator.notification.alert("您目前尚未登入，無法評論",function(){},'未登入','我知道了');
+                    return;
+                }
+                
+				
+				localStorage.setItem("comment_target", target);
+				
+				navigator.notification.confirm(
+					'請選擇圖片取得方式', // message
+					 function(buttonIndex) {
+    					
+						var sourceType  = Camera.PictureSourceType.CAMERA;
+						switch(buttonIndex) {
+							case 1:
+								sourceType  = Camera.PictureSourceType.PHOTOLIBRARY;
+								break;
+							case 2:
+								sourceType  = Camera.PictureSourceType.CAMERA;
+								break;	
+						}
+				
+				
+						navigator.camera.getPicture(function(imageData){
+							//success
+													console.log(target);
+								
+								localStorage.setItem("tmp_photo", imageData);
+								$("#comment_photo_tmp").attr("src", imageData);
+								
+								if(target == "item") {						
+									$("#comment_textarea").val($("#comment_area").val());
+								} else if (target == "travel") {
+									$("#comment_textarea").val($("#travel_comment_area").val());
+								}						
+								
+								$.mobile.changePage("index.html#comment_photo_confirm");
+												
+							}, function(){
+							//failure	
+								alert("無法取得您的照相機");	
+							}, {
+							quality: 35,
+							destinationType: Camera.DestinationType.FILE_URI,
+							correctOrientation: true,
+							PictureSourceType: 2,
+							saveToPhotoAlbum: true,
+							allowEdit: true,
+							sourceType: sourceType
+						});
+					},            // callback to invoke with index of button pressed
+					'照相',           // title
+					['圖庫','照相']     // buttonLabels
+				);
+				
+			}
+			
+			//上傳行程的照片
+			function postPhoto(){
+                
+                var is_login = localStorage.getItem("is_login");
+                if(!is_login) {
+                    navigator.notification.alert("您目前尚未登入，無法評論",function(){},'未登入','我知道了');
+                    return;
+                }
+				
+				$.mobile.loading("show", {
+                                 text: "照片上傳中請稍候",
+                                 textVisible: true,
+                                 theme: "a",
+                                 html: ""
+                                 });
+				
+				var tmp_photo = localStorage.getItem("tmp_photo");
+				
+				var options = new FileUploadOptions();
+                options.fileKey="file";
+                options.fileName=tmp_photo.substr(tmp_photo.lastIndexOf('/')+1);
+                options.mimeType="image/jpeg";
+                
+                
+                options.params = {
+                    travel_id: detail_id,
+                    token: token                    
+                };
+				
+				var ft = new FileTransfer();
+                ft.upload(tmp_photo, encodeURI(apidomain+"postphoto"+extension), function(r) {
+                          //success
+                          console.log("Code = " + r.responseCode);
+                          console.log("Response = " + r.response);
+                          console.log("Sent = " + r.bytesSent);
+                          
+                          var data = JSON.parse(r.response);
+                          console.log(data.status);
+                          if(data.status=="OK"){
+							$.mobile.loading("hide");  
+                            changeTravelPhoto(detail_id);
+                            $.mobile.changePage("index.html#photo");
+							
+                          }
+                          
+                          
+                          
+                          }, function(error) {
+                          
+                          //error
+                          alert("An error has occurred: Code = " + error.code);
+                          console.log("upload error source " + error.source);
+                          console.log("upload error target " + error.target);
+                          $.mobile.loading("hide");
+                          }, options);
+				
+				
+			}
+			
+			function postCommentAndPhoto(){
+                
+                var is_login = localStorage.getItem("is_login");
+                if(!is_login) {
+                    navigator.notification.alert("您目前尚未登入，無法評論",function(){},'未登入','我知道了');
+                    return;
+                }
+                
+                $.mobile.loading("show", {
+                                 text: "照片上傳中請稍候",
+                                 textVisible: true,
+                                 theme: "a",
+                                 html: ""
+                                 });
+				
+				var comment_target = localStorage.getItem("comment_target");
+				
+				var tmp_photo = localStorage.getItem("tmp_photo");
+				var comment = $("#comment_textarea").val();
+                
+                var options = new FileUploadOptions();
+                options.fileKey="file";
+                options.fileName=tmp_photo.substr(tmp_photo.lastIndexOf('/')+1);
+                options.mimeType="image/jpeg";
+                
+                console.log(comment_target)
+                
+				if(comment_target == "item") {
+                
+					options.params = {
+						item_id: detail_id,
+						token: token,
+						comment: comment
+					};
+					
+					var upload_target = encodeURI(apidomain+"postcomment"+extension);
+                
+				} else if (comment_target == "travel") {
+					
+					options.params = {
+						travel_id: detail_id,
+						token: token,
+						comment: comment
+					};
+					
+					var upload_target = encodeURI(apidomain+"posttravelcomment"+extension);
+					
+				}
+				
+                console.log("start File Transfering");
+                
+                try {
+                
+                    var ft = new FileTransfer();
+                    
+                    ft.upload(tmp_photo, upload_target, function(r) {
+                          //success
+                          console.log("Code = " + r.responseCode);
+                          console.log("Response = " + r.response);
+                          console.log("Sent = " + r.bytesSent);
+                          
+                          var data = JSON.parse(r.response);
+                          console.log(data.status);
+                          if(data.status=="OK"){
+                            var item_comment = data.result;
+                            var tmp = itemComment(item_comment);
+							
+							var comment_target = localStorage.getItem("comment_target");
+							
+							if(comment_target == "item") {
+							
+                            	$("#comment_part").append(tmp);
+                            	$("#comment_area").val("");
+                            	$.mobile.changePage("index.html#comment");
+							
+							} else if (comment_target == "travel") {
+								
+								$("#travel_comment_part").append(tmp);
+                            	$("#travel_comment_area").val("");
+                            	$.mobile.changePage("index.html#travel_comment");
+								
+							}
+							
+                          }
+                          $.mobile.loading("hide");
+                          
+                          
+                          }, function(error) {
+                          
+                          //error
+                          alert("An error has occurred: Code = " + error.code);
+                          console.log("upload error source " + error.source);
+                          console.log("upload error target " + error.target);
+                          $.mobile.loading("hide");
+                          }, options);
+                
+                } catch (err) {
+                   alert(err.message);
+                }
+                
+                /*
+                console.log(tmp_photo);
+				//get data
+                $.ajax({
+                       type: "POST",
+                       url: apidomain + "postcomment",
+                       data: {"item_id":detail_id, "token":token, "comment":comment},
+                       dataType: "json",
+                       beforeSend: function(xhr) {
+                            $.mobile.loading("show", {
+                                        text: "系統讀取中",
+                                        textVisible: true,
+                                        theme: "z",
+                                        html: ""
+                                        });
+                       }
+                }).done(function(data) {
+                    try {
+                        console.log(data);
+                        if (data.status == 'OK') {
+                            var item_comment = data.result;
+                            var tmp = itemComment(item_comment);
+                            $("#comment_part").append(tmp);
+                            $("#comment_area").val("");
+                            							    
+                        } else {
+                            alert(data.result);
+                        }
+                    } catch (err) {
+                        alert(err.message);
+                    }
+                    $.mobile.loading("hide");
+                }).fail(function(e){
+                    alert("postcomment photo ajax error");
+                    $.mobile.loading("hide");
+                });			
+                 */
+				
+			}
+
+            /********************************
+             旅遊日記
+             ********************************/
+			
+			function changeTripDay(day, trip_id) {
+                
+                current_day = day;
+				trip_id = trip_id;
+                
+				var ul = getTripItem(day, triplist);
+				$("#trip_listview_parent").html("");				
+				$("#trip_listview_parent").append(ul).trigger('create');
+				
+				$(".ordertab").click(function(e) {
+                    $(".ordertab").removeClass("ui-btn-active2");
+					$(this).addClass("ui-btn-active2");
+                });
+				
+
+			}
+			
+			function getTripItem(day, triplist) {				
+				var tmp = $("<ul>").attr({"id":"trip_listview","data-role":"listview"});
+				for(var i=0; i<triplist.length; i++){					
+					if( triplist[i].day == day ) {						
+						for(var j=0; j < triplist[i].trip.length; j++) {							
+							var li = $("<li>").html('<a href="javascript:changeDetail('+triplist[i].trip[j].id+');"><img src="'+triplist[i].trip[j].img+'" /><h3>'+triplist[i].trip[j].title+'</h3><p>'+triplist[i].trip[j].desc+'</p></a>');
+							tmp.append(li);
+								
+						}													
+					}										
+				}
+				return tmp;
+				
+			}
+			
+            function changeTravelTrip(travel_id) {
+				//id="detailbackbtn" href="javascript: gotoList();"
+                
+				$.mobile.changePage("index.html#travel_trip");
+                detail_id = travel_id;
+				$("#trip_navbar_parent").html("");
+				$("#trip_listview_parent").html("");
+                
+                $("#detailbackbtn").attr("href","javascript: changeTravelTrip("+travel_id+");");
+				
+				$.ajax({
+                       type: "GET",
+                       url: apidomain + "triplist"+extension,
+                       data: {"travel_id":travel_id, "token":token},
+                       dataType: "json",
+                       beforeSend: function(xhr) {
+                            $.mobile.loading("show", {
+                                        text: "系統讀取中",
+                                        textVisible: true,
+                                        theme: "z",
+                                        html: ""
+                                        });
+                       }
+                }).done(function(data) {
+                    try {
+                        console.log(data);
+                        if (data.status == 'OK') {
+                            triplist = data.result;
+							
+							//navbar part               
+							var ul = $("<ul>").attr("id","trip_navbar");
+							for(var i=0; i<triplist.length; i++){
+								var li = $("<li>").html('<a href="javascript:changeTripDay('+triplist[i].day+', '+triplist[i].id+');" style="padding:0px;" class="ordertab '+(i==0?'ui-btn-active2':'')+'">第'+triplist[i].day+'天</a>');
+								ul.append(li);
+							}	
+							var div = $("<div>").addClass("navbar").attr("data-role","navbar").append(ul);																	
+							$("#trip_navbar_parent").append(div).trigger('create');
+							
+							//body part
+							var ul = getTripItem(1, triplist);
+							$("#trip_listview_parent").append(ul).trigger('create');
+							
+							//ordertab ui-btn-active2
+							$(".ordertab").click(function(e) {
+								$(".ordertab").removeClass("ui-btn-active2");
+								$(this).addClass("ui-btn-active2");
+							});
+							
+                            							    
+                        } else {
+                            alert(data.result);
+                        }
+                    } catch (err) {
+                        alert(err.message);
+                    }
+					
+					if(typeof data.ads != 'undefined') {
+							 $(".ads_image").attr({"src": data.ads.img, "onclick": 'window.open(\''+data.ads.url+'\', \'_system\');'});
+						 }
+					
+                    $.mobile.loading("hide");
+                }).fail(function(e){
+                    console.log("changeTravelTrip ajax error"+JSON.stringify(e));
+                    navigator.notification.alert("伺服器資料格式錯誤，請洽非來不可API工程師",function(){},'系統錯誤','我知道了');
+                        
+                    $.mobile.loading("hide");
+                });	
+				
+				
+                
+
+            }
+			
+			//ChangePage to Travel Member			
+            function changeTravelMember(travel_id) {
+
+                detail_id = travel_id;
+                $.mobile.changePage("index.html#travel_member");
+				
+				$.ajax({
+                        type: "GET",
+                        url: apidomain + "travelmember"+extension,
+                        data: {"trave_id": travel_id, "token": token},
+                        dataType: "json",
+                        beforeSend: function(xhr) {
+                           $.mobile.loading("show", {
+                                            text: "系統讀取中",
+                                            textVisible: true,
+                                            theme: "z",
+                                            html: ""
+                                            });
+                        }
+                    }).done(function(data) {
+                            try {
+                                console.log(data);                                
+                                if (data.status == 'OK') {
+									
+									$("#travel_member_content").html("");
+									
+									memberlist = data.result;
+                                    
+									var tmp = $("<ul>").attr({"data-role":"listview"});
+									for(var i=0; i<memberlist.length; i++){					
+																					
+										var li = $("<li>").html('<a href="javascript:memberLocationMap(\''+memberlist[i].username+'\', \''+memberlist[i].lat+'\',\''+memberlist[i].lng+'\',\''+memberlist[i].location+'\')"><img src="'+memberlist[i].avatar+'" /><h3>'+memberlist[i].username+'</h3><p>最新位置: '+memberlist[i].location+'</p></a>');
+										tmp.append(li);																																					
+																				
+									}
+									
+									var div = $("<div>").addClass("content-primary").append(tmp);
+									$("#travel_member_content").append(div).trigger("create");
+									$.mobile.loading("hide");
+
+                                } else {
+                                    console.log(data.result);
+                                    $.mobile.loading("hide");
+                                }
+                            } catch (err) {
+                                console.log(err.message);
+                                $.mobile.loading("hide");
+                            }
+							
+							if(typeof data.ads != 'undefined') {
+							 $(".ads_image").attr({"src": data.ads.img, "onclick": 'window.open(\''+data.ads.url+'\', \'_system\');'});
+						 	}
+
+                        
+                        }).fail(function(e){
+                            console.log("travelmember ajax error"+JSON.stringify(e));
+                            navigator.notification.alert("伺服器資料格式錯誤，請洽非來不可API工程師",function(){},'系統錯誤','我知道了');
+                            $.mobile.loading("hide");
+                        });
+				
+
+            }
+			
+			//ChangePage to Travel Photo	
+            function changeTravelPhoto(travel_id) {
+
+                detail_id = travel_id;
+                $.mobile.changePage("index.html#travel_photo");
+				 $.ajax({
+                        type: "GET",
+                        url: apidomain + "travelphoto"+extension,
+                        data: {"travel_id": travel_id, "token": token},
+                        dataType: "json",
+                        beforeSend: function(xhr) {
+                           $.mobile.loading("show", {
+                                            text: "系統讀取中",
+                                            textVisible: true,
+                                            theme: "z",
+                                            html: ""
+                                            });
+                        }
+                    }).done(function(data) {
+                            try {
+                                console.log(data);                                
+                                if (data.status == 'OK') {
+									
+                                    var tmp = '';
+									for(var i=0; i < data.result.length; i++) {
+										
+										console.log(data.result[i].pic + ' ' + data.result[i].caption);
+                                        //tmp += data.result[i].pic;
+										
+										tmp += '<div class="photo"><a href="javascript:popupTravelPhoto(\'' + data.result[i].pic + '\');" ><img src="'+data.result[i].pic+'" title="'+data.result[i].caption+'"/></a></div>';
+									}
+									tmp += '<div class="clearboth"></div>';
+                            
+                            
+                                    var div = $("<div>").html(tmp);
+                                    $("#travel_photo_content").html("");
+									$("#travel_photo_content").append(div);
+									$.mobile.loading("hide");
+
+                                } else {
+                                    console.log(data.result);
+                                    $.mobile.loading("hide");
+                                }
+                            } catch (err) {
+                                console.log(err.message);
+                            }
+							
+							if(typeof data.ads != 'undefined') {
+							 $(".ads_image").attr({"src": data.ads.img, "onclick": 'window.open(\''+data.ads.url+'\', \'_system\');'});
+						 	}
+
+                        
+                    }).fail(function(e){
+                            console.log("travelphoto ajax error"+JSON.stringify(e));
+                            navigator.notification.alert("伺服器資料格式錯誤，請洽非來不可API工程師",function(){},'系統錯誤','我知道了');
+                            $.mobile.loading("hide");
+                    });
+
+            }
+        
+        /********************************
+         會員
+         ********************************/
+        
+			function register(){
+				
+				var register_username = $("#register_username").val();
+				var register_email = $("#register_email").val();
+				var register_pwd = $("#register_pwd").val();
+				var register_repwd = $("#register_repwd").val();
+				
+				if( register_username == "" ) {
+					
+					navigator.notification.alert(
+										'使用者暱稱不得為空',
+										function(){},
+										'無法送出',
+										'OK'
+									);					
+					return false;	
+				}
+				if( register_email == "" ) {
+					
+					navigator.notification.alert(
+										'使用者Email不得為空',
+										function(){},
+										'無法送出',
+										'OK'
+									);
+										
+					return false;	
+				}
+				if( register_pwd == "" ) {
+					navigator.notification.alert(
+										'密碼不得為空',
+										function(){},
+										'無法送出',
+										'OK'
+									);
+					
+					return false;	
+				}
+				if( register_repwd == "" ) {
+					
+					navigator.notification.alert(
+										'密碼確認不得為空',
+										function(){},
+										'無法送出',
+										'OK'
+									);
+					
+					return false;	
+				}
+				
+				if( register_pwd != register_repwd ) {
+					
+					navigator.notification.alert(
+										'密碼 與 確認密碼不相同',
+										function(){},
+										'無法送出',
+										'OK'
+									);					
+					return false;	
+				}
+				
+				
+				$.ajax({
+                        type: "POST",
+                        url: apidomain + "register"+extension,
+                        data: {"username": register_username, "email": register_email, "pwd": register_pwd},
+                        dataType: "json",
+                        beforeSend: function(xhr) {
+                           $.mobile.loading("show", {
+                                            text: "系統讀取中",
+                                            textVisible: true,
+                                            theme: "z",
+                                            html: ""
+                                            });
+                        }
+                    }).done(function(data) {
+                            try {
+                                console.log(data);                                
+                                if (data.status == 'OK') {
+									
+									
+									navigator.notification.alert(
+										'您現在可以開始使用皮生活APP了!',
+										function(){},
+										'註冊成功',
+										'OK'
+									);
+									
+                                    localStorage.setItem("is_login", 1);
+                                    localStorage.setItem("account_type", "PLIFE");
+                                    localStorage.setItem("token", data.result.token);
+                                    localStorage.setItem("user_id", data.result.user_id);
+                            
+                            
+                                    if(typeof data.ads != 'undefined') {
+                                        $(".ads_image").attr({"src": data.ads.img, "onclick": 'window.open(\''+data.ads.url+'\', \'_system\');'});
+                                    }
+
+                                    //go to member center
+                                    $.mobile.changePage("index.html#member");
+                                    initiateMemberPage();
+
+                                } else {
+									
+									navigator.notification.alert(
+										data.result,
+										function(){},
+										'註冊失敗',
+										'OK'
+									);
+									
+                                    $.mobile.loading("hide");
+                                }
+                            } catch (err) {
+                                console.log(err.message);
+                                $.mobile.loading("hide");
+                            }
+							
+							
+
+                        
+                            }).fail(function(e){
+                                    navigator.notification.alert("伺服器資料格式錯誤，請洽非來不可API工程師",function(){},'系統錯誤','我知道了');
+                                    console.log("register ajax error"+JSON.stringify(e));
+                                    $.mobile.loading("hide");
+                            });
+				
+
+			}        
+
+            //Login
+            function login() {
+                var email = $("#login_email").val();
+                var pwd = $("#login_password").val();
+
+                if (email == '') {
+					
+					navigator.notification.alert(
+										"Email不得為空",
+										function(){},
+										'資訊不正確',
+										'我知道了'
+									);
+					
+                    return;
+                }
+
+                if (pwd == "") {
+					
+					navigator.notification.alert(
+										"尚未輸入密碼喔",
+										function(){},
+										'登入資訊不正確',
+										'我知道了'
+									);					
+                    return;
+                }
+
+                if (email != "" && pwd != "") {
+                    $.ajax({
+                        type: "POST",
+                        url: apidomain + "login"+extension,
+                        data: {"email": email, "pwd": pwd},
+                        dataType: "json",
+                        beforeSend: function(xhr) {
+                           $.mobile.loading("show", {
+                                            text: "系統讀取中",
+                                            textVisible: true,
+                                            theme: "z",
+                                            html: ""
+                                            });
+                        }
+                    }).done(function(data) {
+                            try {
+                                console.log(data);                                
+                                if (data.status == 'OK') {
+                                    localStorage.setItem("is_login", 1);
+                                    localStorage.setItem("account_type", "PLIFE");
+                                    localStorage.setItem("token", data.result.token);
+                                    localStorage.setItem("user_id", data.result.user_id);
+                                    token=data.result.token;
+
+                                    //go to member center
+                                    $.mobile.changePage("index.html#member");
+                                    initiateMemberPage();
+
+                                } else {
+									
+									navigator.notification.alert(
+										data.result,
+										function(){},
+										'登入失敗',
+										'再試一次'
+									);											
+                                    $.mobile.loading("hide");
+                                }
+                            } catch (err) {
+                                console.log(err.message);
+                            }
+							
+							if(typeof data.ads != 'undefined') {
+							 $(".ads_image").attr({"src": data.ads.img, "onclick": 'window.open(\''+data.ads.url+'\', \'_system\');'});
+						 	}
+
+                        
+                    }).fail(function(e){
+                        navigator.notification.alert("伺服器資料格式錯誤，請洽非來不可API工程師",function(){},'系統錯誤','我知道了');
+                        console.log("login ajax error"+JSON.stringify(e));
+                        $.mobile.loading("hide");
+                    });
+                }
+            }
+
+            function initiateMemberPage() {
+
+                var is_login = localStorage.getItem("is_login");
+                var token = localStorage.getItem("token");
+                
+                console.log("token = "+token);
+                
+                if (is_login) {
+
+                    $.ajax({
+                        type: "GET",
+                        url: apidomain + "getUser"+extension,
+                        data: { token: token},
+                        dataType: "json",
+                        beforeSend: function(xhr) {
+                           console.log(apidomain + "getUser");
+                           $.mobile.loading("show", {
+                                            text: "系統讀取中",
+                                            textVisible: true,
+                                            theme: "z",
+                                            html: ""
+                                            });
+                        }
+                    }).done(function(data) {
+                        console.log(data);
+                        if (data.status == 'OK') {
+							
+							
+							localStorage.setItem("userdata", data.result);
+							
+                            $("#member_avatar").attr("src", data.result.avatar);
+							$("#member_avatar2").attr("src", data.result.avatar);
+                            $("#member_username").html(data.result.username);
+							
+							$("#change_username").val(data.result.username);
+							$("#change_email").val(data.result.email);
+							
+							$("#login_section").show();
+							$("#notlogin_section").hide();
+                            $.mobile.loading("hide");
+                        } else {
+                            console.log(data.result);
+                            $.mobile.loading("hide");
+                        }
+						
+						if(typeof data.ads != 'undefined') {
+							 $(".ads_image").attr({"src": data.ads.img, "onclick": 'window.open(\''+data.ads.url+'\', \'_system\');'});
+						 }
+						
+                    }).fail(function(e) {
+                        navigator.notification.alert("伺服器資料格式錯誤，請洽非來不可API工程師",function(){},'系統錯誤','我知道了');
+                        console.log("getuser ajax error: "+JSON.stringify(e));
+                        $.mobile.loading("hide");
+                    });
+                }
+
+            }
+			
+			//Logout
+			function logout(){
+								
+				var token = localStorage.getItem("token");				
+				$.ajax({
+                        type: "POST",
+                        url: apidomain+"logout"+extension,
+                        data: {"token":token},
+                        dataType: "json",
+                        beforeSend: function(xhr) {
+                            $.mobile.loading("show", {
+                                text: "系統讀取中",
+                                textVisible: true,
+                                theme: "z",
+                                html: ""
+                            });
+                        }
+                    })
+                    .done(function(data){                                                      
+						localStorage.removeItem("is_login");
+						localStorage.removeItem("token");
+						$("#member_avatar").attr("src", "images/member.png");
+						$("#member_username").html("尚未登入");
+						$("#login_section").hide();
+						$("#notlogin_section").show();
+						
+						
+						if(typeof data.ads != 'undefined') {
+							 $(".ads_image").attr({"src": data.ads.img, "onclick": 'window.open(\''+data.ads.url+'\', \'_system\');'});
+						 }
+													
+                        $.mobile.loading("hide");                          
+                    })
+                    .fail(function(e) {
+                        navigator.notification.alert("伺服器資料格式錯誤，請洽非來不可API工程師",function(){},'系統錯誤','我知道了');
+                        console.log("logout ajax error"+JSON.stringify(e));
+                        $.mobile.loading("hide");
+                    });
+				
+				
+			}
+			
+			function updateUserProfile(){
+				
+				var change_username = $("#change_username").val();
+				var change_email = $("#change_email").val();
+				var change_pwd = $("#change_pwd").val();
+				var change_repwd = $("#change_repwd").val();
+				
+				if( change_username == "" ) {
+					
+					navigator.notification.alert(
+										'使用者暱稱不得為空',
+										function(){},
+										'無法送出',
+										'OK'
+									);					
+					return false;	
+				}
+				if( change_email == "" ) {
+					
+					navigator.notification.alert(
+										'使用者Email不得為空',
+										function(){},
+										'無法送出',
+										'OK'
+									);
+										
+					return false;	
+				}
+				
+				
+				if( change_pwd != change_repwd ) {
+					
+					navigator.notification.alert(
+										'密碼 與 確認密碼不相同',
+										function(){},
+										'無法送出',
+										'OK'
+									);					
+					return false;	
+				}
+				
+				
+				$.ajax({
+                        type: "POST",
+                        url: apidomain + "updateUserProfile"+extension,
+                        data: {"username": change_username, "email": change_email, "pwd": change_pwd, "token": token},
+                        dataType: "json",
+                        beforeSend: function(xhr) {
+                           $.mobile.loading("show", {
+                                            text: "資料更新中",
+                                            textVisible: true,
+                                            theme: "z",
+                                            html: ""
+                                            });
+                        }
+                    }).done(function(data) {
+                            try {
+                                console.log(data);                                
+                                if (data.status == 'OK') {
+									
+									
+									navigator.notification.alert(
+										'更新完成!',
+										function(){},
+										'會員資料',
+										'OK'
+									);									                                    
+
+                                    //go to member center
+                                    $.mobile.changePage("index.html#member");
+                                    initiateMemberPage();
+
+                                } else {
+									
+									navigator.notification.alert(
+										data.result,
+										function(){},
+										'會員資料',
+										'OK'
+									);
+									
+                                    $.mobile.loading("hide");
+                                }
+                            } catch (err) {
+                                console.log(err.message);
+                            }
+							
+							
+							if(typeof data.ads != 'undefined') {
+							 $(".ads_image").attr({"src": data.ads.img, "onclick": 'window.open(\''+data.ads.url+'\', \'_system\');'});
+						 }
+
+                        
+                }).fail(function(e) {
+                    navigator.notification.alert("伺服器資料格式錯誤，請洽非來不可API工程師",function(){},'系統錯誤','我知道了');
+                    console.log("updateUserProfile ajax error: "+JSON.stringify(e));
+                    $.mobile.loading("hide");
+                });
+				
+				
+				
+			}
+			
+			function chooseMethod(){
+				
+				navigator.notification.confirm(
+					'請選擇更換方式', // message
+					 function(buttonIndex) {
+    					
+						var sourceType  = Camera.PictureSourceType.CAMERA;
+						switch(buttonIndex) {
+							case 1:
+								sourceType  = Camera.PictureSourceType.PHOTOLIBRARY;
+								break;
+							case 2:
+								sourceType  = Camera.PictureSourceType.CAMERA;
+								break;	
+						}
+						
+						navigator.camera.getPicture(function(imageURI){
+							
+							//camera took success
+							$.mobile.loading("show", {
+                                 text: "圖片上傳中",
+                                 textVisible: true,
+                                 theme: "z",
+                                 html: ""
+                                 });
+							
+							var userdata = localStorage.getItem("userdata");
+                            var change_username = $("#change_username").val();
+                            var change_email = $("#change_email").val();
+                            var token = localStorage.getItem("token");
+				
+							var options = new FileUploadOptions();
+							options.fileKey="file";
+							options.fileName=imageURI.substr(imageURI.lastIndexOf('/')+1);
+							options.mimeType="image/jpeg";
+                                                    
+                            
+							options.params = {                    
+								"username": change_username,
+                                "token": token,
+								"email": change_email,
+							};
+                                                    
+                            console.log("token sent = " + token);
+				
+							var ft = new FileTransfer();
+                			ft.upload(imageURI, encodeURI(apidomain+"updateUserProfile"+extension), function(r) {
+                          		//file transfer success
+                          		console.log("Code = " + r.responseCode);
+                          		console.log("Response = " + r.response);
+                          		console.log("Sent = " + r.bytesSent);
+                          
+                          		var data = JSON.parse(r.response);
+                                console.log(data);
+                          		if(data.status=="OK"){
+                                    console.log("UPDATE USER PROFILE OK");
+                                      
+                                    $("#member_avatar").attr("src", "");
+                                    $("#member_avatar2").attr("src", "");
+                                      
+									$("#member_avatar").attr("src", data.result.avatar);					
+                            		$("#member_avatar2").attr("src", data.result.avatar);							
+                          		}
+								$.mobile.loading("hide");
+                                                    
+                          
+                          	}, function(error) {
+                          
+                          	//file transfer error
+                          		alert("An error has occurred: Code = " + error.code);
+                          		console.log("upload error source " + error.source);
+                          		console.log("upload error target " + error.target);
+                          		$.mobile.loading("hide");
+                          	}, options);
+                    
+									
+								
+																				
+							
+							}, function(){															
+								//camera fail
+								
+							//camera options
+							}, { quality: 50,
+    						destinationType: Camera.DestinationType.FILE_URI,
+							sourceType: sourceType,
+							saveToPhotoAlbum: true,
+							allowEdit: true,
+							targetWidth: 300,
+							targetHeight: 300,
+							cameraDirection: 1
+						});
+						
+						
+					},            // callback to invoke with index of button pressed
+					'頭圖更換',           // title
+					['圖庫','照相']     // buttonLabels
+				);
+				
+				
+			}
+        
+        
+        
+        function showRecommendSearch(){
+            
+            $("#search_recommend").html('');
+            $("#search_result").html('');
+            if( recommended_search.length > 0 ){
+                var tmp = '<li data-role="list-divider">推薦搜尋</li>';
+                for(var i=0; i<recommended_search.length; i++ ) {
+                    tmp += '<li class="rec">'+recommended_search[i]+'</li>';
+                }
+                $("#search_recommend").html(tmp);
+                
+                $("#search_recommend").trigger('create');
+                
+                $("#search_recommend").on('click', 'li', function() {
+                                          $("#search-basic").val($(this).html());
+                                          goSearch();
+                                          });
+            
+            }
+        }
+        
+        function checkReinputRecommend(){
+            if($("#search-basic").val()=="") {
+                showRecommendSearch();
+            }
+        }
+
+
+            $(document).ready(function(e) {
+				console.log("Document Ready");
+                              
+                              
+                              
+                              
+                
+                              
+
+                //when device is ready
+                document.addEventListener("deviceready", onDeviceReady, false);
+
+                //when device is online
+                document.addEventListener("online", onDeviceOnline, false);
+
+                //when device is offline
+                document.addEventListener("offline", onDeviceOffline, false);
+				
+				//ordertab ui-btn-active2
+				$(".ordertab").click(function(e) {
+                    $(".ordertab").removeClass("ui-btn-active2");
+					$(this).addClass("ui-btn-active2");
+                });
+				
+				
+				
+				console.log("Map Initialize");
+				//Map Initialize                             
+                map = new google.maps.Map(document.getElementById("map-canvas"), {
+                             zoom: 10,
+                             center: defaultLatLng,
+                             mapTypeId: google.maps.MapTypeId.ROADMAP
+                        });
+                             
+                             // Add an overlay to the map of current lat/lng
+                var marker = new google.maps.Marker({
+                                                        position: defaultLatLng,
+                                                        map: map,
+                                                        title: "目前位置",
+                                                        });
+                map_markers.push(marker);
+				
+				
+            });
+            
+            
+            var notify_type = "msg";
+            var notify_id   = 1;
+            
+            
+            //Android
+            // Android and Amazon Fire OS
+            function onNotification(e) {
+                //console.log('<li>EVENT -> RECEIVED:' + e.event + '</li>');
+                
+                switch( e.event )
+                {
+                    case 'registered':
+                    if ( e.regid.length > 0 )
+                    {
+                        
+                        console.log("regID = " + e.regid);
+                        
+                        try {
+                            
+                            $.ajax({
+                                   type: "POST",
+                                   url: apidomain+"tokenRegister"+extension,
+                                   data: {device:"android",deviceToken:e.regid,sid:sid,token:token},
+                                   dataType: "json"
+                                   })
+                            .done(function(data){
+                                         console.log(data);
+                                         if (data.status == 'OK') {
+                                         
+                                            console.log("android deviceToken, sid, token submitted");
+                                         
+                                            if(typeof data.ads != 'undefined') {
+                                                $(".ads_image").attr({"src": data.ads.img, "onclick": 'window.open(\''+data.ads.url+'\', \'_system\');'});
+                                            }
+                                         
+                                            $.mobile.loading("hide");
+                                         }
+                            })
+                            .fail(function(e) {
+                                console.log("android rid upload error");
+                                //console.log(JSON.stringify(e));
+                                $.mobile.loading("hide");
+                            });
+                                               
+                        } catch (err) {
+                            console.log(err.message);
+                        }
+                        
+                        
+                        
+                        //$("#app-status-ul").append('<li>REGISTERED -> REGID:' + e.regid + "</li>");
+                        // Your GCM push server needs to know the regID before it can push to this device
+                        // here is where you might want to send it the regID for later use.
+                        
+                    }
+                    break;
+                    
+                    case 'message':
+                    // if this flag is set, this notification happened while we were in the foreground.
+                    // you might want to play a sound to get the user's attention, throw up a dialog, etc.
+                    if ( e.foreground )
+                    {
+                        //$("#app-status-ul").append('<li>--INLINE NOTIFICATION--' + '</li>');
+                        
+                        // on Android soundname is outside the payload.
+                        // On Amazon FireOS all custom attributes are contained within payload
+                        //var soundfile = e.soundname || e.payload.sound;
+                        // if the notification contains a soundname, play it.
+                        //var my_media = new Media("/android_asset/www/"+ soundfile);
+                        //my_media.play();
+                    }
+                    else
+                    {  // otherwise we were launched because the user touched a notification in the notification tray.
+                        if ( e.coldstart )
+                        {
+                            //$("#app-status-ul").append('<li>--COLDSTART NOTIFICATION--' + '</li>');
+                        }
+                        else
+                        {
+                            //$("#app-status-ul").append('<li>--BACKGROUND NOTIFICATION--' + '</li>');
+                        }
+                    }
+                    
+                    notify_type = e.payload.type;
+                    notify_id   = e.payload.id;
+                    
+                    navigator.notification.confirm(
+                                                   e.payload.message, // message
+                                                   notifyDetermine,
+                                                   '收到來自「非來不可」的推播通知',           // title
+                                                   ['去看看','算了']     // buttonLabels
+                                                   );
+                                                   
+                    
+                    
+                    //$("#app-status-ul").append('<li>MESSAGE -> MSG: ' + e.payload.message + '</li>');
+                    //Only works for GCM
+                    //$("#app-status-ul").append('<li>MESSAGE -> MSGCNT: ' + e.payload.msgcnt + '</li>');
+                    //Only works on Amazon Fire OS
+                    //$status.append('<li>MESSAGE -> TIME: ' + e.payload.timeStamp + '</li>');
+                    break;
+                    
+                    case 'error':
+                    //$("#app-status-ul").append('<li>ERROR -> MSG:' + e.msg + '</li>');
+                    
+                    console.log("GCM failure: "+e.msg);
+                    
+                    break;
+                    
+                    default:
+                    console.log('EVENT -> Unknown, an event was received and we do not know what it is');
+                    break;
+                }
+            }
+        
+        
+        
+        
+        
+            function notifyDetermine(buttonIndex){
+                
+                if(buttonIndex==1){
+                    
+                    if(notify_type){
+                        switch(notify_type){
+                            case "msg":
+                            gotoMsg();
+                            break;
+                            case "item":
+                            detail_id=notify_id;
+                            changeDetail(notify_id);
+                            break;
+                            case "trip":
+                            detail_id=notify_id;
+                            changeTravelTrip(notify_id);
+                            break;
+                            case "trip_photo":
+                            detail_id=notify_id;
+                            changeTravelPhoto(notify_id);
+                            break;
+                            case "trip_comment":
+                            detail_id=notify_id;
+                            travelComment();
+                            break;
+                        }
+                    }
+                    
+                    
+                }
+            }
+        
+            //iOS
+            function onNotificationAPN (event) {
+                if ( event.alert )
+                {
+                    notify_type = event.type;
+                    notify_id   = event.id;
+                    
+                    navigator.notification.confirm(
+                        event.alert, // message
+                        notifyDetermine,
+                        '收到來自「非來不可」的推播通知',           // title
+                        ['去看看','算了']     // buttonLabels
+                    );
+                    
+                    //navigator.notification.alert(event.alert);
+                }
+                
+                if ( event.sound )
+                {
+                    var snd = new Media(event.sound);
+                    snd.play();
+                }
+                
+                if ( event.badge )
+                {
+                    pushNotification.setApplicationIconBadgeNumber(function(e){console.log("badge update successfully");}, function(e){console.log("badge update failure");}, event.badge);
+                }
+            }
+        
+        
+            var pushNotification;
+            var sid;
+
+            // device APIs are available
+            //
+            function onDeviceReady() {
+                
+                
+                
+                sid = localStorage.getItem("sid");
+                if(sid == null){
+                    //sid is used for not logged in status
+                    sid = Math.random();
+                    localStorage.setItem("sid", sid);
+                }
+                
+                //看看使用者token是否有效
+                token = localStorage.getItem("token");
+                if(token!=null) {
+                    console.log("check user token availability");
+                    $.ajax({
+                           type: "GET",
+                           url: apidomain + "getUser"+extension,
+                           data: { token: token},
+                           dataType: "json",
+                           beforeSend: function(xhr) {
+                           console.log(apidomain + "getUser");
+                           $.mobile.loading("show", {
+                                            text: "系統讀取中",
+                                            textVisible: true,
+                                            theme: "z",
+                                            html: ""
+                                            });
+                           }
+                    }).done(function(data) {
+                        console.log(data);
+                        if (data.status == 'OK') {
+                            localStorage.setItem("is_login", 1);
+                            localStorage.setItem("userdata", data.result);
+                                   
+                            $("#member_avatar").attr("src", data.result.avatar);
+                            $("#member_avatar2").attr("src", data.result.avatar);
+                            $("#member_username").html(data.result.username);
+                                   
+                            $("#change_username").val(data.result.username);
+                            $("#change_email").val(data.result.email);
+                                   
+                            $("#login_section").show();
+                            $("#notlogin_section").hide();
+                            $.mobile.loading("hide");
+                        } else {
+                            console.log(data.result);
+                            $.mobile.loading("hide");
+                        }
+                                   
+                        if(typeof data.ads != 'undefined') {
+                            $(".ads_image").attr({"src": data.ads.img, "onclick": 'window.open(\''+data.ads.url+'\', \'_system\');'});
+                        }
+                                   
+                    }).fail(function(e) {
+                        navigator.notification.alert("伺服器資料格式錯誤，請洽非來不可API工程師",function(){},'系統錯誤','我知道了');
+                        console.log("getuser ajax error: "+JSON.stringify(e));
+                        $.mobile.loading("hide");
+                    });
+                }
+                
+                console.log('sid = '+sid);
+                console.log('device Platform = '+device.platform);
+                
+                pushNotification = window.plugins.pushNotification;
+                
+                //android
+                if ( device.platform == 'Android' ){
+                    
+                    
+                    pushNotification.register(
+                                              //android success
+                                              function(e){
+                                                console.log('android GCM rid = ' + e);
+                                              },
+                                              //android error
+                                              function(e){
+                                                console.log('android GCM fail, e = ' + e);
+                                              },
+                                              {
+                                              "senderID":"70902276432", //on google project
+                                              "ecb":"onNotification"
+                                              });
+                
+                //ios
+                } else {
+                    
+                    pushNotification.register(
+                                              //ios token register success
+                                              function(e){
+                                              
+                                              console.log('ios devicetoken = ' + e);
+                                              
+                                              try {
+                                              
+                                                $.ajax({
+                                                     type: "POST",
+                                                     url: apidomain+"tokenRegister"+extension,
+                                                       data: {device:"ios",deviceToken:e,sid:sid,token:token},
+                                                     dataType: "json"
+                                                })
+                                                .done(function(data){
+                                                    console.log(data);
+                                                    if (data.status == 'OK') {
+                                                    
+                                                      console.log("deviceToken, sid, token submitted");
+                                                    
+                                                      if(typeof data.ads != 'undefined') {
+                                                        $(".ads_image").attr({"src": data.ads.img, "onclick": 'window.open(\''+data.ads.url+'\', \'_system\');'});
+                                                      }
+                                                    
+                                                      $.mobile.loading("hide");
+                                                    }
+                                                })
+                                                .fail(function(e) {
+                                                    console.log("push ajax error");
+                                                    //console.log(JSON.stringify(e));
+                                                    $.mobile.loading("hide");
+                                                });
+                                              
+                                              } catch (err) {
+                                                console.log(err.message);
+                                              }
+                                              
+                                              
+                                              
+                                              },
+                                              //ios error
+                                              function(e){
+                                                console.log('ios APN error, e = ' + e);
+                                              },
+                                              {
+                                              "badge":"true",
+                                              "sound":"true",
+                                              "alert":"true",
+                                              "ecb":"onNotificationAPN"
+                                              });
+                    
+                }
+                
+                
+                // Now safe to use device APIs
+                navigator.geolocation.getCurrentPosition(successHandler, errorHandler);
+                
+                
+
+                try {
+                    
+                    
+                    $.ajax({
+                        cache : false,
+                        type: "GET",
+                        async: true,
+                        url: apidomain+"search_init"+extension,
+                        data: "",
+                        dataType: "json",
+                        beforeSend: function(xhr) {
+                            $.mobile.loading("show", {
+                                text: "系統正在初始化",
+                                textVisible: true,
+                                theme: "z",
+                                html: ""
+                            });
+                        }
+                    })
+                    .done(function(data){
+                          console.log(data);
+                          if (data.status == 'OK') {
+                          
+							  
+							  //搜尋推薦
+							  var tmp = '<li data-role="list-divider">推薦搜尋</li>';
+							  for(var i=0; i<data.result.length;i++){
+								  tmp += '<li class="rec">'+data.result[i]+'</li>';
+                                  recommended_search.push(data.result[i]);
+
+							  }
+							  $("#search_recommend").html(tmp);
+                          
+                              $("#search_recommend").on('click', 'li', function() {
+                                    $("#search-basic").val($(this).html());
+                                    goSearch();
+                              });
+                          
+                                                        
+                          }
+						  
+						  if(typeof data.ads != 'undefined') {
+							 $(".ads_image").attr({"src": data.ads.img, "onclick": 'window.open(\''+data.ads.url+'\', \'_system\');'});
+						 }
+						  
+						  $.mobile.loading("hide");
+                    })
+                    .fail(function(e) {
+                        console.log("推薦搜尋 ajax error");
+                        //console.log(JSON.stringify(e));
+						$.mobile.loading("hide");
+                    });
+
+                } catch (err) {
+                    console.log(err.message);
+                }
+
+
+                //try storage
+                if (typeof (Storage) !== "undefined") {
+                    // Code for localStorage/sessionStorage.
+                    console.log("STORAGE is ok!");
+                    var storage_token = localStorage.getItem("token");
+                    if (storage_token != null) {
+                        token = storage_token;
+                        console.log("usertoken: "+token);
+                    }
+
+
+                } else {
+                    // Sorry! No Web Storage support..
+                    console.log("no web STORAGE found!");
+                }
+                
+                
+                //facebook
+                var fblogin = function () {
+                    
+                    $.mobile.loading("show", {
+                                     text: "系統正在初始化",
+                                     textVisible: true,
+                                     theme: "z",
+                                     html: ""
+                                     });
+                                     
+                    if (!window.cordova) {
+                        var appId = prompt("Enter FB Application ID", "");
+                        facebookConnectPlugin.browserInit(appId);
+                    }
+                    facebookConnectPlugin.login( ["email"], facebookLoginSuccess, function (response) { console.log(response)
+                    });
+                }
+
+
+            }
+
+            function successHandler(position) {			
+				//search purpose	
+				latlng = position.coords.latitude+','+position.coords.longitude;
+				
+                console.log("device Position: "+latlng);
+                
+				//global purpose
+                defaultLatLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+                map_markers[0].setPosition(defaultLatLng);
+            }
+
+            function errorHandler(error) {
+                console.log("抓不到目前的位置" + error.code + ' ' + error.message);
+            }
+
+            function onDeviceOnline() {
+                console.log("目前裝置已有網路連線");
+            }
+
+            function onDeviceOffline() {
+                alert("目前裝置沒有網路連線");
+            }
+
+            var watchID;
+
+            function startWatchHandler() {
+                var options = {timeout: 30000};
+                watchID = navigator.geolocation.watchPosition(successHandler, errorHandler, options);
+            }
+
+            function stopWatchHandler() {
+                navigator.geolocation.clearWatch(watchID);
+            }
+
+            //camera
+            function takePhoto() {				
+				navigator.notification.confirm(
+					'請選擇照片取得方式', // message
+					 function(buttonIndex) {
+    					
+						var sourceType  = Camera.PictureSourceType.CAMERA;
+						switch(buttonIndex) {
+							case 1:
+								sourceType  = Camera.PictureSourceType.PHOTOLIBRARY;
+								break;
+							case 2:
+								sourceType  = Camera.PictureSourceType.CAMERA;
+								break;	
+						}
+								
+
+						navigator.camera.getPicture(function(imageURI) {
+						
+							localStorage.setItem("tmp_photo", imageURI);
+							$("#photo_tmp").attr("src", imageURI);
+							$.mobile.changePage("index.html#photo_confirm");
+		
+						}, function (message) {
+							console.log('Camera failed because: ' + message);
+						}, {
+							quality: 75,
+							destinationType: Camera.DestinationType.FILE_URI,
+							sourceType: sourceType,
+							correctOrientation: true,
+							PictureSourceType: 2,
+							saveToPhotoAlbum: true,
+							allowEdit: true,
+						});
+
+            		},            // callback to invoke with index of button pressed
+					'照相',           // title
+					['圖庫','照相']     // buttonLabels
+				);
+			}	
+
+            
+
+            
+
+            $(window).scroll(function(){
+                             if(page_pointer == "itemlist") {
+                                    if($(document).height() > $(window).height())
+                                    {
+                                        if($(window).scrollTop() == $(document).height() - $(window).height()){
+                                            console.log("ask for more");
+                                            renderItemlist(saved_order_by);
+                             
+                                        }
+                                    }
+                             }
+            });
+            
+            
+            $( document ).on( "pageinit", "#map", function() {				
+				console.log("pageinit:map");  	                    
+            });
+            
+            //當地圖的頁面顯示的時候
+            $("#map").live("pageshow", function(e,ui){
+				console.log("#map live pageshow");
+                google.maps.event.trigger(map, 'resize');                           
+                console.log(map.getCenter());
+				console.log(map_markers);
+				showMarkers();                           
+            });
+			
+			/*
+			var Weibo = cordova.require("cordova/plugin/Weibo");
+			
+			var wblogin = function(){
+                
+                
+                //alert("button press");
+				
+				Weibo.login(3233455767, "http://api.weibo.com/oauth2/default.html", function(r){
+					alert("weibo login success");
+					console.log(r);
+				}, function(r){
+					alert("weibo login failure");
+					console.log(r);
+				});				
+				
+			}
+             */
+            
+            
+            function facebookLoginSuccess(response){
+                
+                var user_email = '';
+                console.log(response);
+                
+                localStorage.setItem("facebook_response", response.authResponse);
+                localStorage.setItem("facebook_access_token", response.authResponse.accessToken);
+                
+                if(response.status == 'connected') {
+                    
+                    facebookConnectPlugin.api(response.authResponse.userID+"/?fields=id,email", null,
+                                              
+                                              //success callback
+                                              function (result) {
+                                                    console.log("Result: " + JSON.stringify(result));
+                                                    user_email = result.email;
+                                              
+                                                    $.ajax({
+                                                           type: "POST",
+                                                           url: apidomain + "fblogin"+extension,
+                                                           data: {"fb_id": response.authResponse.userID, "access_token": response.authResponse.accessToken, "email":user_email},
+                                                           dataType: "json",
+                                                           beforeSend: function(xhr) {
+                                                           $.mobile.loading("show", {
+                                                                      text: "系統讀取中",
+                                                                      textVisible: true,
+                                                                      theme: "z",
+                                                                      html: ""
+                                                                      });
+                                                           }
+                                                     }).done(function(data) {
+                                                             try {
+                                                                console.log(data);
+                                                                if (data.status == 'OK') {
+                                                                    localStorage.setItem("is_login", 1);
+                                                                    localStorage.setItem("account_type", "FB");
+                                                                    localStorage.setItem("token", data.result.token);
+                                                                    localStorage.setItem("user_id", data.result.user_id);
+                                                             
+                                                                    //go to member center
+                                                                    $.mobile.changePage("index.html#member");
+                                                                    $.mobile.loading("hide");
+                                                                    initiateMemberPage();
+                                                             
+                                                                } else {
+                                                                    alert(data.result);
+                                                                    $.mobile.loading("hide");
+                                                                }
+                                                             } catch (err) {
+                                                                console.log(err.message);
+                                                                $.mobile.loading("hide");
+                                                             }
+															 
+															 if(typeof data.ads != 'undefined') {
+																 $(".ads_image").attr({"src": data.ads.img, "onclick": 'window.open(\''+data.ads.url+'\', \'_system\');'});
+															 }
+                                                             
+                                                             
+                                                        }).fail(function(e) {
+                                                            console.log("fblogin ajax error"+JSON.stringify(e));
+                                                            $.mobile.loading("hide");
+                                                        });
+                                              
+                                              
+                                              },
+                                              
+                                              //failure callback
+                                              function (error) {
+                                                alert("Failed: " + error);
+                                                $.mobile.loading("hide");
+                                              });
+                
+                } else {					
+					alert(JSON.stringify(response));	
+					$.mobile.loading("hide");					
+				}
+                
+                
+            }
+
+
+                                                                                                            
+            </script>
+
+
+
+    </body>
+</html>

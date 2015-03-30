@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="css/jquery.mobile-1.2.1.css" />
+    <script src="cordova.js" ></script>
+    <script src="js/jquery.js"></script>
+    <script src="js/jquery.mobile-1.2.0.js"></script>
+    <title>PLife 皮生活</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    </head>
+    <body>
+    <!-- Home Page -->
+    <div id="home" data-role="page" data-position="fixed">
+        <div data-role="header">
+            <h1>Hello</h1>
+        </div>
+        <div class="main_menu" data-role="content">
+        </div>
+        <div data-role="footer" data-position="fixed" style="background-color:#fff;">
+            
+        </div>
+        
+    </div>
+    </body>
+    <script>
+        
+        var domain = "http://www.flbk.com.tw/";
+            //var domain = "http://www.pilife.com.tw/";
+            var apidomain = domain+"Api_App/";
+            //var domain = "http://api2.aipi2.com/";
+            //var apidomain = domain;
+            var extension = ".aspx";
+            //var extension = "";
+        
+        //General Ajax
+        $(document).bind("mobileinit", function() {
+                         // Make your jQuery Mobile framework configuration changes here!
+                         $.support.cors=true;
+                         $.mobile.allowCrossDomainPages = true;
+        });
+        
+        //when device is ready
+        document.addEventListener("deviceready", onDeviceReady, false);
+        
+        function onDeviceReady(){
+            
+            //alert("HHHH");
+            
+            $.ajax({
+                        type: "GET",
+                        url: apidomain + "getitem"+extension,
+                        data: {"item_id": 1670, "token": "", "latlng": "" },
+                        dataType: "json",
+                        beforeSend: function(xhr) {
+                           $.mobile.loading("show", {
+                                            text: "系統讀取中",
+                                            textVisible: true,
+                                            theme: "z",
+                                            html: ""
+                                            });
+                        }
+                    }).done(function(data) {
+                           try {
+                                console.log(data);                                
+                                if (data.status == 'OK') {                                    
+					alert('Success');				
+									                                 
+                                } else {
+                                    alert(data.result);
+                                    
+                                }
+                            } catch (err) {
+                                alert(err.message);
+                            }
+
+                        
+                            $.mobile.loading("hide");
+                    }).fail(function(e){
+                      navigator.notification.alert("伺服器資料格式錯誤，請洽非來不可API工程師",function(){},'系統錯誤','我知道了');
+                      console.log("itemlist ajax error"+JSON.stringify(e));
+                    });
+            
+            
+            
+        }
+        
+    </script>
+</html>
