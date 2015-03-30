@@ -2,10 +2,10 @@
 <widget id="com.appluco.flbk" version="0.0.2" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>FLBK</name>
     <description>
-        A sample Apache Cordova application that responds to the deviceready event.
+        A travel assistant App that developed by Cordova 4.x
     </description>
     <author email="dev@cordova.apache.org" href="http://cordova.io">
-        Apache Cordova Team
+        I-Tea Technology
     </author>
     <content src="index.html" />
     <access origin="*" />
